@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'mainwindow.ui'
+** Form generated from reading UI file 'mainwindowdiKwNM.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.15.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef UI_MAINWINDOW_H
-#define UI_MAINWINDOW_H
+#ifndef MAINWINDOWDIKWNM_H
+#define MAINWINDOWDIKWNM_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -104,19 +104,20 @@ public:
     QVTKWidget *qvtkWidget;
     QGroupBox *groupBox_4;
     QGridLayout *gridLayout_6;
-    QSlider *horizontalSlider_Green;
-    QSlider *horizontalSlider_Blue;
-    QSlider *horizontalSlider_Red;
     QSpinBox *spinBox_green;
-    QLabel *Lable_Red;
     QLabel *Lable_Size;
-    QSpinBox *spinBox_red;
-    QLabel *Lable_Green;
-    QPushButton *pushButton_2;
-    QSlider *horizontalSlider_Size;
-    QSpinBox *spinBox_size;
     QSpinBox *spinBox_blue;
     QLabel *Lable_Blue;
+    QLabel *Lable_Red;
+    QSlider *horizontalSlider_Red;
+    QPushButton *pushButton_2;
+    QSlider *horizontalSlider_Green;
+    QLabel *Lable_Green;
+    QSpinBox *spinBox_size;
+    QSlider *horizontalSlider_Size;
+    QSlider *horizontalSlider_Blue;
+    QSpinBox *spinBox_red;
+    QPushButton *pushButton_cloud_clear;
     QWidget *tab_4;
     QTextBrowser *textBrowser_2;
     QLabel *label_9;
@@ -431,64 +432,15 @@ public:
         groupBox_4->setMaximumSize(QSize(16777215, 67));
         gridLayout_6 = new QGridLayout(groupBox_4);
         gridLayout_6->setObjectName(QString::fromUtf8("gridLayout_6"));
-        horizontalSlider_Green = new QSlider(groupBox_4);
-        horizontalSlider_Green->setObjectName(QString::fromUtf8("horizontalSlider_Green"));
-        horizontalSlider_Green->setOrientation(Qt::Horizontal);
-
-        gridLayout_6->addWidget(horizontalSlider_Green, 0, 3, 2, 1);
-
-        horizontalSlider_Blue = new QSlider(groupBox_4);
-        horizontalSlider_Blue->setObjectName(QString::fromUtf8("horizontalSlider_Blue"));
-        horizontalSlider_Blue->setOrientation(Qt::Horizontal);
-
-        gridLayout_6->addWidget(horizontalSlider_Blue, 0, 5, 2, 1);
-
-        horizontalSlider_Red = new QSlider(groupBox_4);
-        horizontalSlider_Red->setObjectName(QString::fromUtf8("horizontalSlider_Red"));
-        horizontalSlider_Red->setOrientation(Qt::Horizontal);
-
-        gridLayout_6->addWidget(horizontalSlider_Red, 0, 1, 2, 1);
-
         spinBox_green = new QSpinBox(groupBox_4);
         spinBox_green->setObjectName(QString::fromUtf8("spinBox_green"));
 
         gridLayout_6->addWidget(spinBox_green, 1, 2, 1, 1);
 
-        Lable_Red = new QLabel(groupBox_4);
-        Lable_Red->setObjectName(QString::fromUtf8("Lable_Red"));
-
-        gridLayout_6->addWidget(Lable_Red, 0, 0, 1, 1);
-
         Lable_Size = new QLabel(groupBox_4);
         Lable_Size->setObjectName(QString::fromUtf8("Lable_Size"));
 
         gridLayout_6->addWidget(Lable_Size, 0, 6, 1, 1);
-
-        spinBox_red = new QSpinBox(groupBox_4);
-        spinBox_red->setObjectName(QString::fromUtf8("spinBox_red"));
-
-        gridLayout_6->addWidget(spinBox_red, 1, 0, 1, 1);
-
-        Lable_Green = new QLabel(groupBox_4);
-        Lable_Green->setObjectName(QString::fromUtf8("Lable_Green"));
-
-        gridLayout_6->addWidget(Lable_Green, 0, 2, 1, 1);
-
-        pushButton_2 = new QPushButton(groupBox_4);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-
-        gridLayout_6->addWidget(pushButton_2, 0, 8, 2, 1);
-
-        horizontalSlider_Size = new QSlider(groupBox_4);
-        horizontalSlider_Size->setObjectName(QString::fromUtf8("horizontalSlider_Size"));
-        horizontalSlider_Size->setOrientation(Qt::Horizontal);
-
-        gridLayout_6->addWidget(horizontalSlider_Size, 0, 7, 2, 1);
-
-        spinBox_size = new QSpinBox(groupBox_4);
-        spinBox_size->setObjectName(QString::fromUtf8("spinBox_size"));
-
-        gridLayout_6->addWidget(spinBox_size, 1, 6, 1, 1);
 
         spinBox_blue = new QSpinBox(groupBox_4);
         spinBox_blue->setObjectName(QString::fromUtf8("spinBox_blue"));
@@ -499,6 +451,60 @@ public:
         Lable_Blue->setObjectName(QString::fromUtf8("Lable_Blue"));
 
         gridLayout_6->addWidget(Lable_Blue, 0, 4, 1, 1);
+
+        Lable_Red = new QLabel(groupBox_4);
+        Lable_Red->setObjectName(QString::fromUtf8("Lable_Red"));
+
+        gridLayout_6->addWidget(Lable_Red, 0, 0, 1, 1);
+
+        horizontalSlider_Red = new QSlider(groupBox_4);
+        horizontalSlider_Red->setObjectName(QString::fromUtf8("horizontalSlider_Red"));
+        horizontalSlider_Red->setOrientation(Qt::Horizontal);
+
+        gridLayout_6->addWidget(horizontalSlider_Red, 0, 1, 2, 1);
+
+        pushButton_2 = new QPushButton(groupBox_4);
+        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+
+        gridLayout_6->addWidget(pushButton_2, 0, 8, 2, 1);
+
+        horizontalSlider_Green = new QSlider(groupBox_4);
+        horizontalSlider_Green->setObjectName(QString::fromUtf8("horizontalSlider_Green"));
+        horizontalSlider_Green->setOrientation(Qt::Horizontal);
+
+        gridLayout_6->addWidget(horizontalSlider_Green, 0, 3, 2, 1);
+
+        Lable_Green = new QLabel(groupBox_4);
+        Lable_Green->setObjectName(QString::fromUtf8("Lable_Green"));
+
+        gridLayout_6->addWidget(Lable_Green, 0, 2, 1, 1);
+
+        spinBox_size = new QSpinBox(groupBox_4);
+        spinBox_size->setObjectName(QString::fromUtf8("spinBox_size"));
+
+        gridLayout_6->addWidget(spinBox_size, 1, 6, 1, 1);
+
+        horizontalSlider_Size = new QSlider(groupBox_4);
+        horizontalSlider_Size->setObjectName(QString::fromUtf8("horizontalSlider_Size"));
+        horizontalSlider_Size->setOrientation(Qt::Horizontal);
+
+        gridLayout_6->addWidget(horizontalSlider_Size, 0, 7, 2, 1);
+
+        horizontalSlider_Blue = new QSlider(groupBox_4);
+        horizontalSlider_Blue->setObjectName(QString::fromUtf8("horizontalSlider_Blue"));
+        horizontalSlider_Blue->setOrientation(Qt::Horizontal);
+
+        gridLayout_6->addWidget(horizontalSlider_Blue, 0, 5, 2, 1);
+
+        spinBox_red = new QSpinBox(groupBox_4);
+        spinBox_red->setObjectName(QString::fromUtf8("spinBox_red"));
+
+        gridLayout_6->addWidget(spinBox_red, 1, 0, 1, 1);
+
+        pushButton_cloud_clear = new QPushButton(groupBox_4);
+        pushButton_cloud_clear->setObjectName(QString::fromUtf8("pushButton_cloud_clear"));
+
+        gridLayout_6->addWidget(pushButton_cloud_clear, 0, 9, 2, 1);
 
 
         verticalLayout_2->addWidget(groupBox_4);
@@ -555,7 +561,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(3);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -600,11 +606,12 @@ public:
         pushButton->setText(QCoreApplication::translate("MainWindow", "\350\256\241\347\256\227\351\207\215\345\273\272", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
         groupBox_4->setTitle(QCoreApplication::translate("MainWindow", "CloudSetting", nullptr));
-        Lable_Red->setText(QCoreApplication::translate("MainWindow", "Red:", nullptr));
         Lable_Size->setText(QCoreApplication::translate("MainWindow", "Size:", nullptr));
-        Lable_Green->setText(QCoreApplication::translate("MainWindow", "Green:", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("MainWindow", "\346\201\242\345\244\215\345\210\235\350\257\225\350\247\206\350\247\222", nullptr));
         Lable_Blue->setText(QCoreApplication::translate("MainWindow", "Blue:", nullptr));
+        Lable_Red->setText(QCoreApplication::translate("MainWindow", "Red:", nullptr));
+        pushButton_2->setText(QCoreApplication::translate("MainWindow", "\346\201\242\345\244\215\345\210\235\350\257\225\350\247\206\350\247\222", nullptr));
+        Lable_Green->setText(QCoreApplication::translate("MainWindow", "Green:", nullptr));
+        pushButton_cloud_clear->setText(QCoreApplication::translate("MainWindow", "\346\270\205\347\251\272\347\202\271\344\272\221\346\225\260\346\215\256", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QCoreApplication::translate("MainWindow", "\351\241\265", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "\347\233\270\346\234\272\346\240\207\345\256\232\350\257\257\345\267\256", nullptr));
         pushButton_clearClib->setText(QCoreApplication::translate("MainWindow", "\346\270\205\351\231\244\346\240\207\345\256\232\344\277\241\346\201\257", nullptr));
@@ -625,4 +632,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // UI_MAINWINDOW_H
+#endif // MAINWINDOWDIKWNM_H

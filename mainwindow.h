@@ -24,9 +24,24 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/visualization/pcl_visualizer.h>
+#include <pcl/visualization/point_cloud_color_handlers.h>
+
+#include<pcl/filters/statistical_outlier_removal.h>   //统计滤波器头文件
 
 // Visualization Toolkit (VTK)
 #include <vtkRenderWindow.h>
+#include <vtkRenderWindow.h>
+#include <vtkPNGReader.h>
+#include <vtkImageData.h>
+#include <vtkLogoRepresentation.h>
+#include <vtkLogoWidget.h>
+#include <vtkAxesActor.h>
+#include <vtkOrientationMarkerWidget.h>
+#include <vtkScalarBarWidget.h>
+#include <vtkScalarBarActor.h>
+#include <vtkScalarBarRepresentation.h>
+#include <vtkColorTransferFunction.h>
+
 #include <ImageProcess.h>
 #include <MyMatQuery.h>
 #include <Calibrate.h>
@@ -63,7 +78,6 @@ private:
     //PCL
     pcl::visualization::PCLVisualizer::Ptr viewer;
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud;
-
     //激光三角法
     //相机
     CalibrateCamera* camera;
@@ -109,6 +123,8 @@ private slots:
     void on_pushButton_2_clicked();
 
     void on_pushButton_clearClib_clicked();
+
+    void on_pushButton_cloud_clear_clicked();
 
     void RGBsliderReleased();
 

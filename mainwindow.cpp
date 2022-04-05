@@ -130,7 +130,7 @@ MainWindow::MainWindow(QWidget *parent)
     
     ui->spinBox_2->setValue(3);
     ui->spinBox_2->setSingleStep(2);
-    ui->spinBox_3->setValue(9);
+    ui->spinBox_3->setValue(17);
     ui->spinBox_3->setSingleStep(2);
     ui->doubleSpinBox->setValue(0.6);
     ui->doubleSpinBox->setSingleStep(0.02);
@@ -154,11 +154,11 @@ MainWindow::MainWindow(QWidget *parent)
     isCalibed = false;
     getlinemethod = Steger;
 
+    
     viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
     ui->qvtkWidget->SetRenderWindow(viewer->getRenderWindow());
     viewer->setupInteractor(ui->qvtkWidget->GetInteractor(), ui->qvtkWidget->GetRenderWindow());
     ui->qvtkWidget->update();
-
     ui->radioButton_X_add->setChecked(true);
 }
 
@@ -166,6 +166,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
 
 void MainWindow::setEven(int value)
 {
@@ -477,9 +479,18 @@ void MainWindow::on_pushButton_clicked()
         ui->listWidget_LaserLine->clear();
         ui->textBrowser->append("cleared");
         ui->textBrowser->append("showing cloud....");
+        //滤波处理
+        pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_after_StatisticalRemoval(new pcl::PointCloud<pcl::PointXYZRGB>);//
+        pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> Statistical;
+        Statistical.setInputCloud(cloud);
+        Statistical.setMeanK(50);//取平均值的临近点数
+        Statistical.setStddevMulThresh(0.5);//临近点数数目少于多少时会被舍弃
+        Statistical.filter(*cloud_after_StatisticalRemoval);
 
-        viewer->addPointCloud(cloud, "cloud");
-        viewer->updatePointCloud(cloud, "cloud");
+        viewer->addPointCloud(cloud_after_StatisticalRemoval, "cloud");
+        viewer->updatePointCloud(cloud_after_StatisticalRemoval, "cloud");
+        //viewer->addPointCloud(cloud, "cloud");
+        //viewer->updatePointCloud(cloud, "cloud");
         viewer->resetCamera();
         viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, size, "cloud");
         ui->qvtkWidget->update();
@@ -506,10 +517,22 @@ void MainWindow::on_pushButton_clearClib_clicked()
 {
     if (camera != NULL&&ALaserPlane != NULL&&Astep != NULL)
     {
+        isCalibed = false;
+        isCameraCalib = false;
+        isPlaneCalib = false;
+        isStepCalib = false;
+        isBaseCalib = false;
         Camera_Calib.clear();
         Plane_Board_noLaser.clear();
         Plane_Laser.clear();
         Step_Calculate.clear();
+        ui->listWidget_BasePic->clear();
+        ui->listWidget_Board_Laser->clear();
+        ui->listWidget_Board_noLaser->clear();
+        ui->listWidget_CalibPic->clear();
+        ui->listWidget_Step_Pic->clear();
+        ui->textBrowser_2->append("======================abandoned=======================");
+        ui->label_flagCalibed->setText("No");
         delete camera;
         delete ALaserPlane;
         delete Astep;
@@ -532,6 +555,20 @@ void MainWindow::RGBsliderReleased()
         viewer->updatePointCloud(cloud, "cloud");
         ui->qvtkWidget->update();
     }
+}
+
+void MainWindow::on_pushButton_cloud_clear_clicked()
+{
+    if (cloud != NULL)
+    {
+        cloud->points.clear();
+        viewer->updatePointCloud(cloud, "cloud");
+        viewer->resetCamera();
+        ui->qvtkWidget->update();
+        QMessageBox::information(this, "info", "Points cloud has been cleared!");
+    }
+    else
+        QMessageBox::information(this,"info","Points cloud has not initialed!");
 }
 
 void MainWindow::pSliderValueChanged(int value)
