@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7B465EBF-F7B3-3148-9AC6-080C1241BBB8}</ProjectGuid>
+    <RootNamespace>LineLaser3DScan</RootNamespace>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.22000.0</WindowsTargetPlatformMinVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <PlatformToolset>v142</PlatformToolset>
+    <OutputDirectory>release\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>LineLaser3DScan</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <PlatformToolset>v142</PlatformToolset>
+    <OutputDirectory>debug\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>LineLaser3DScan</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>debug\</OutDir>
+    <IntDir>debug\</IntDir>
+    <TargetName>LineLaser3DScan</TargetName>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>release\</OutDir>
+    <IntDir>release\</IntDir>
+    <TargetName>LineLaser3DScan</TargetName>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>D:\VTK8.2.0install\include\vtk-8.2;C:\Program Files\PCL 1.11.1\3rdParty\Qhull\include;C:\Program Files\PCL 1.11.1\3rdParty\FLANN\include;C:\Program Files\PCL 1.11.1\3rdParty\Eigen\eigen3;C:\Program Files\PCL 1.11.1\3rdParty\Boost\include\boost-1_74;C:\Program Files\PCL 1.11.1\include\pcl-1.11;C:\Program Files\OpenNI2\Include;D:\LASTools\LASlib\inc;D:\LASTools\LASzip\src;D:\大学\毕业设计\opencv343\build\include;D:\大学\毕业设计\opencv343\build\include\opencv;D:\大学\毕业设计\opencv343\build\include\opencv2;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\VTK8.2.0install\lib;C:\Program Files\PCL 1.11.1\3rdParty\Qhull\lib;C:\Program Files\PCL 1.11.1\3rdParty\FLANN\lib;C:\Program Files\PCL 1.11.1\3rdParty\Boost\lib;C:\Program Files\PCL 1.11.1\lib;C:\Program Files\OpenNI2\Lib;D:\LASTools\LASlib\lib;D:\大学\毕业设计\opencv343\build\x64\vc14\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <QtInstall>5.15.2_msvc2019_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <QtInstall>5.15.2_msvc2019_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+  </PropertyGroup>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;release;/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>release\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;NDEBUG;QT_NO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>
+      </ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>QVTKWidgetPlugin.lib;vtkGUISupportQt-8.2.lib;vtkGUISupportQtSQL-8.2.lib;vtkRenderingQt-8.2.lib;vtkViewsQt-8.2.lib;LASlib.lib;OpenNI2.lib;vtkChartsCore-8.2.lib;vtkCommonColor-8.2.lib;vtkCommonComputationalGeometry-8.2.lib;vtkCommonCore-8.2.lib;vtkCommonDataModel-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkCommonMath-8.2.lib;vtkCommonMisc-8.2.lib;vtkCommonSystem-8.2.lib;vtkCommonTransforms-8.2.lib;vtkDICOMParser-8.2.lib;vtkDomainsChemistry-8.2.lib;vtkDomainsChemistryOpenGL2-8.2.lib;vtkdoubleconversion-8.2.lib;vtkexodusII-8.2.lib;vtkexpat-8.2.lib;vtkFiltersAMR-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersExtraction-8.2.lib;vtkFiltersFlowPaths-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkFiltersGeneric-8.2.lib;vtkFiltersGeometry-8.2.lib;vtkFiltersHybrid-8.2.lib;vtkFiltersHyperTree-8.2.lib;vtkFiltersImaging-8.2.lib;vtkFiltersModeling-8.2.lib;vtkFiltersParallel-8.2.lib;vtkFiltersParallelImaging-8.2.lib;vtkFiltersPoints-8.2.lib;vtkFiltersProgrammable-8.2.lib;vtkFiltersSelection-8.2.lib;vtkFiltersSMP-8.2.lib;vtkFiltersSources-8.2.lib;vtkFiltersStatistics-8.2.lib;vtkFiltersTexture-8.2.lib;vtkFiltersTopology-8.2.lib;vtkFiltersVerdict-8.2.lib;vtkfreetype-8.2.lib;vtkGeovisCore-8.2.lib;vtkgl2ps-8.2.lib;vtkglew-8.2.lib;vtkhdf5-8.2.lib;vtkhdf5_hl-8.2.lib;vtkImagingColor-8.2.lib;vtkImagingCore-8.2.lib;vtkImagingFourier-8.2.lib;vtkImagingGeneral-8.2.lib;vtkImagingHybrid-8.2.lib;vtkImagingMath-8.2.lib;vtkImagingMorphological-8.2.lib;vtkImagingSources-8.2.lib;vtkImagingStatistics-8.2.lib;vtkImagingStencil-8.2.lib;vtkInfovisCore-8.2.lib;vtkInfovisLayout-8.2.lib;vtkInteractionImage-8.2.lib;vtkInteractionStyle-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkIOAMR-8.2.lib;vtkIOAsynchronous-8.2.lib;vtkIOCityGML-8.2.lib;vtkIOCore-8.2.lib;vtkIOEnSight-8.2.lib;vtkIOExodus-8.2.lib;vtkIOExport-8.2.lib;vtkIOExportOpenGL2-8.2.lib;vtkIOExportPDF-8.2.lib;vtkIOGeometry-8.2.lib;vtkIOImage-8.2.lib;vtkIOImport-8.2.lib;vtkIOInfovis-8.2.lib;vtkIOLegacy-8.2.lib;vtkIOLSDyna-8.2.lib;vtkIOMINC-8.2.lib;vtkIOMovie-8.2.lib;vtkIONetCDF-8.2.lib;vtkIOParallel-8.2.lib;vtkIOParallelXML-8.2.lib;vtkIOPLY-8.2.lib;vtkIOSegY-8.2.lib;vtkIOSQL-8.2.lib;vtkIOTecplotTable-8.2.lib;vtkIOVeraOut-8.2.lib;vtkIOVideo-8.2.lib;vtkIOXML-8.2.lib;vtkIOXMLParser-8.2.lib;vtkjpeg-8.2.lib;vtkjsoncpp-8.2.lib;vtklibharu-8.2.lib;vtklibxml2-8.2.lib;vtklz4-8.2.lib;vtklzma-8.2.lib;vtkmetaio-8.2.lib;vtkNetCDF-8.2.lib;vtkogg-8.2.lib;vtkParallelCore-8.2.lib;vtkpng-8.2.lib;vtkproj-8.2.lib;vtkpugixml-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingGL2PSOpenGL2-8.2.lib;vtkRenderingImage-8.2.lib;vtkRenderingLabel-8.2.lib;vtkRenderingLOD-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingVolume-8.2.lib;vtkRenderingVolumeOpenGL2-8.2.lib;vtksqlite-8.2.lib;vtksys-8.2.lib;vtktheora-8.2.lib;vtktiff-8.2.lib;vtkverdict-8.2.lib;vtkViewsContext2D-8.2.lib;vtkViewsCore-8.2.lib;vtkViewsInfovis-8.2.lib;vtkzlib-8.2.lib;pcl_common.lib;pcl_features.lib;pcl_filters.lib;pcl_io.lib;pcl_io_ply.lib;pcl_kdtree.lib;pcl_keypoints.lib;pcl_ml.lib;pcl_octree.lib;pcl_outofcore.lib;pcl_people.lib;pcl_recognition.lib;pcl_registration.lib;pcl_sample_consensus.lib;pcl_search.lib;pcl_segmentation.lib;pcl_stereo.lib;pcl_surface.lib;pcl_tracking.lib;pcl_visualization.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Core.lib;$(QTDIR)\lib\qtmain.lib;shell32.lib;opencv_aruco343.lib;opencv_bgsegm343.lib;opencv_bioinspired343.lib;opencv_calib3d343.lib;opencv_ccalib343.lib;opencv_core343.lib;opencv_datasets343.lib;opencv_dnn_objdetect343.lib;opencv_dnn343.lib;opencv_dpm343.lib;opencv_face343.lib;opencv_features2d343.lib;opencv_flann343.lib;opencv_fuzzy343.lib;opencv_hfs343.lib;opencv_highgui343.lib;opencv_img_hash343.lib;opencv_imgcodecs343.lib;opencv_imgproc343.lib;opencv_line_descriptor343.lib;opencv_ml343.lib;opencv_objdetect343.lib;opencv_optflow343.lib;opencv_phase_unwrapping343.lib;opencv_photo343.lib;opencv_plot343.lib;opencv_reg343.lib;opencv_rgbd343.lib;opencv_saliency343.lib;opencv_shape343.lib;opencv_stereo343.lib;opencv_stitching343.lib;opencv_structured_light343.lib;opencv_superres343.lib;opencv_surface_matching343.lib;opencv_text343.lib;opencv_tracking343.lib;opencv_video343.lib;opencv_videoio343.lib;opencv_videostab343.lib;opencv_xfeatures2d343.lib;opencv_ximgproc343.lib;opencv_xobjdetect343.lib;opencv_xphoto343.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\openssl\lib;C:\Utils\my_sql\mysql-5.7.25-winx64\lib;C:\Utils\postgresql\pgsql\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)\LineLaser3DScan.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;NDEBUG;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <QtMoc>
+      <CompilerFlavor>msvc</CompilerFlavor>
+      <Include>./$(Configuration)/moc_predefs.h</Include>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <QtMocDir>$(Configuration)</QtMocDir>
+      <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
+    </QtMoc>
+    <QtUic>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <QtUicDir>$(ProjectDir)</QtUicDir>
+      <QtUicFileName>ui_%(Filename).h</QtUicFileName>
+    </QtUic>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;debug;/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>debug\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\openssl\lib;C:\Utils\my_sql\mysql-5.7.25-winx64\lib;C:\Utils\postgresql\pgsql\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\LineLaser3DScan.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <QtMoc>
+      <CompilerFlavor>msvc</CompilerFlavor>
+      <Include>./$(Configuration)/moc_predefs.h</Include>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <QtMocDir>$(Configuration)</QtMocDir>
+      <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
+    </QtMoc>
+    <QtUic>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <QtUicDir>$(ProjectDir)</QtUicDir>
+      <QtUicFileName>ui_%(Filename).h</QtUicFileName>
+    </QtUic>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Calibrate.cpp" />
+    <ClCompile Include="ImageProcess.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="MyMatQuery.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="mainwindow.h">
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="debug\moc_predefs.h.cbt">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -Zi -MDd -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;debug\moc_predefs.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generate moc_predefs.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\moc_predefs.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="release\moc_predefs.h.cbt">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -O2 -MD -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;release\moc_predefs.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generate moc_predefs.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_predefs.h;%(Outputs)</Outputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="mainwindow.ui">
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Calibrate.h" />
+    <ClInclude Include="ImageProcess.h" />
+    <ClInclude Include="MyMatQuery.h" />
+    <ClInclude Include="ui_mainwindow.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
+</Project>
