@@ -8,7 +8,6 @@
 #include <iostream>
 #include <vector>
 
-//没有使用ROI类
 class ROI {
 private:
 	cv::Point LeftUP;
@@ -22,6 +21,7 @@ public:
 	void SetRightDOWN(cv::Point p);
 	void Select_ROI(int EVENT, int x, int y, int flags, void* userdata);
 };
+
 
 class ProcessTool 
 {

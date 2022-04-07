@@ -19,6 +19,8 @@
 #include <vector>
 #include <QFileDialog>
 #include <QPushButton>
+#include <windows.h>
+
 
 // Point Cloud Library
 #include <pcl/point_cloud.h>
@@ -26,7 +28,9 @@
 #include <pcl/visualization/pcl_visualizer.h>
 #include <pcl/visualization/point_cloud_color_handlers.h>
 
-#include<pcl/filters/statistical_outlier_removal.h>   //统计滤波器头文件
+#include <pcl/filters/statistical_outlier_removal.h>   //统计滤波器头文件
+#include <pcl/filters/radius_outlier_removal.h>
+
 
 // Visualization Toolkit (VTK)
 #include <vtkRenderWindow.h>
@@ -46,6 +50,20 @@
 #include <MyMatQuery.h>
 #include <Calibrate.h>
 #include <QListWidget>
+
+//
+#include "strmif.h"
+#include <initguid.h>
+#include<vector>
+#include<string>
+#pragma comment(lib, "setupapi.lib")
+
+#define VI_MAX_CAMERAS 20
+DEFINE_GUID(CLSID_SystemDeviceEnum, 0x62be5d10, 0x60eb, 0x11d0, 0xbd, 0x3b, 0x00, 0xa0, 0xc9, 0x11, 0xce, 0x86);
+DEFINE_GUID(CLSID_VideoInputDeviceCategory, 0x860bb310, 0x5d01, 0x11d0, 0xbd, 0x3b, 0x00, 0xa0, 0xc9, 0x11, 0xce, 0x86);
+DEFINE_GUID(IID_ICreateDevEnum, 0x29840822, 0x5b84, 0x11d0, 0xbd, 0x3b, 0x00, 0xa0, 0xc9, 0x11, 0xce, 0x86);
+
+#include "Threads.h"
 
 enum GetLineMethods {Average,Steger};
 
@@ -78,6 +96,7 @@ private:
     //PCL
     pcl::visualization::PCLVisualizer::Ptr viewer;
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud;
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_filtered;
     //激光三角法
     //相机
     CalibrateCamera* camera;
@@ -92,11 +111,20 @@ private:
     bool isLaserImg;
     bool isBaseCalib;
     bool isCalibed;
-    //采集图像
-   // void GraspImage();
+    //点云显示
     unsigned int red, green, blue,size;
+
+    //相机相关
+    const std::string winName = "camera";
+    CameraDisplay* CameraDisp;
+    QTimer* tim;
+    float fps;
+    vector<string> CameraName;//存储摄像头名称
+    int listDevices(vector<string>& list);
+
     //暂时没有到
     GetLineMethods getlinemethod;
+
     //右键菜单
     QMenu* popMenu_In_ListWidget_;
     QAction* action_Delete_In_ListWidget_;
@@ -126,6 +154,16 @@ private slots:
 
     void on_pushButton_cloud_clear_clicked();
 
+    void on_pushButton_flashcamera_clicked();
+
+    void on_pushButton_camerastart_clicked();
+
+    void on_pushButton_camerapause_clicked();
+
+    void on_pushButton_cameracontinue_clicked();
+
+    void on_pushButton_camerastop_clicked();
+
     void RGBsliderReleased();
 
     void pSliderValueChanged(int value);
@@ -143,5 +181,7 @@ private slots:
     void onActionClear();
 
     void setEven(int value);
+
+    void onTimeOut();
 };
 #endif // MAINWINDOW_H

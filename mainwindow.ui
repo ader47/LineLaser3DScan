@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1337</width>
-    <height>768</height>
+    <width>1214</width>
+    <height>797</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,9 +36,26 @@
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
             <widget class="QGroupBox" name="groupBox_10">
+             <property name="minimumSize">
+              <size>
+               <width>640</width>
+               <height>360</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>1920</width>
+               <height>1080</height>
+              </size>
+             </property>
              <property name="title">
               <string>相机显示</string>
              </property>
+             <layout class="QGridLayout" name="gridLayout_7">
+              <item row="0" column="0">
+               <widget class="QWidget" name="widget" native="true"/>
+              </item>
+             </layout>
             </widget>
            </item>
            <item>
@@ -100,9 +117,34 @@
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
             <widget class="QGroupBox" name="groupBox_6">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>90</height>
+              </size>
+             </property>
              <property name="title">
               <string>相机选择</string>
              </property>
+             <layout class="QGridLayout" name="gridLayout_4">
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_11">
+                <property name="text">
+                 <string>基本信息</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QPushButton" name="pushButton_flashcamera">
+                <property name="text">
+                 <string>刷新相机</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" colspan="2">
+               <widget class="QComboBox" name="comboBox_camera_select"/>
+              </item>
+             </layout>
             </widget>
            </item>
            <item>
@@ -114,9 +156,45 @@
            </item>
            <item>
             <widget class="QGroupBox" name="groupBox_7">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>90</height>
+              </size>
+             </property>
              <property name="title">
               <string>触发控制</string>
              </property>
+             <layout class="QGridLayout" name="gridLayout_8">
+              <item row="0" column="0">
+               <widget class="QPushButton" name="pushButton_camerastart">
+                <property name="text">
+                 <string>Start</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="pushButton_camerapause">
+                <property name="text">
+                 <string>Pause</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="pushButton_camerastop">
+                <property name="text">
+                 <string>Stop</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QPushButton" name="pushButton_cameracontinue">
+                <property name="text">
+                 <string>Continue</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
            <item>
@@ -266,21 +344,7 @@
            <string/>
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
-           <item row="1" column="2">
-            <widget class="QRadioButton" name="radioButton_Y_add">
-             <property name="text">
-              <string>Y方向拼接</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QRadioButton" name="radioButton_X_add">
-             <property name="text">
-              <string>X轴方向拼接</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1" colspan="2">
+           <item row="0" column="3" colspan="2">
             <widget class="QComboBox" name="comboBox_Methods">
              <property name="minimumSize">
               <size>
@@ -290,8 +354,8 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="4">
-            <widget class="QPushButton" name="pushButton_Caculate">
+           <item row="0" column="7">
+            <widget class="QPushButton" name="pushButton">
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -299,21 +363,18 @@
               </size>
              </property>
              <property name="text">
-              <string>仅计算标定参数</string>
+              <string>计算重建</string>
              </property>
             </widget>
            </item>
            <item row="0" column="0">
-            <widget class="QLabel" name="label">
+            <widget class="QLabel" name="label_12">
              <property name="text">
-              <string>中心线提取算法：</string>
+              <string>滤波半径</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="5">
-            <widget class="QSpinBox" name="spinBox_6"/>
-           </item>
-           <item row="0" column="7" rowspan="2">
+           <item row="0" column="9" rowspan="2">
             <widget class="QGroupBox" name="groupBox_5">
              <property name="minimumSize">
               <size>
@@ -395,15 +456,32 @@
              </layout>
             </widget>
            </item>
-           <item row="1" column="4">
-            <widget class="QLabel" name="label_10">
+           <item row="1" column="7">
+            <widget class="QSpinBox" name="spinBox_6"/>
+           </item>
+           <item row="1" column="3">
+            <widget class="QRadioButton" name="radioButton_X_add">
              <property name="text">
-              <string>步长间隔：</string>
+              <string>X轴方向拼接</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="5">
-            <widget class="QPushButton" name="pushButton">
+           <item row="0" column="2">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>中心线提取算法：</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="4">
+            <widget class="QRadioButton" name="radioButton_Y_add">
+             <property name="text">
+              <string>Y方向拼接</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="6">
+            <widget class="QPushButton" name="pushButton_Caculate">
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -411,9 +489,32 @@
               </size>
              </property>
              <property name="text">
-              <string>计算重建</string>
+              <string>仅计算标定参数</string>
              </property>
             </widget>
+           </item>
+           <item row="1" column="6">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>步长间隔：</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>点个数</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="spinBox_8"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QDoubleSpinBox" name="doubleSpinBox_2"/>
            </item>
           </layout>
          </widget>
@@ -668,7 +769,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1337</width>
+     <width>1214</width>
      <height>23</height>
     </rect>
    </property>

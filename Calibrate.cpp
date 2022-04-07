@@ -157,7 +157,6 @@ cv::Point3f CalibrateCamera::getWorldPoints(const cv::Point2f& inPoints, cv::Mat
 	//s*Pc=M(RPo+T)-->Po=(R-1)[s*(M-1)Pc-T]
 	//Mat wcPoint = rotationMatrix.inv() * (s * this->cameraMatrix.inv() * imagePoint - tvec);
 	//计算x y的坐标
-
 	cv::Mat wcPoint = rotationMatrix.inv() * (s * this->cameraMatrix.inv() * imagePoint - tvec);
 	cv::Point3f worldPoint(wcPoint.at<double>(0, 0), wcPoint.at<double>(1, 0), wcPoint.at<double>(2, 0));
 	return worldPoint;
@@ -288,75 +287,6 @@ void LaserPlane::CaculateLaserPlane()
 	return;
 }
 
-//void LaserPlane::CaculateLaserPlane()
-//{
-//	CvMat* points_mat = cvCreateMat(this->Points3ds.size(), 3, CV_32FC1);//定义用来存储需要拟合点的矩阵 
-//	for (int i = 0; i < this->Points3ds.size(); ++i)
-//	{
-//		//points_data.fl[]按行存储所有要拟合的点
-//		points_mat->data.fl[i * 3 + 0] = this->Points3ds[i].x;//矩阵的值进行初始化   X的坐标值
-//		points_mat->data.fl[i * 3 + 1] = this->Points3ds[i].y;//  Y的坐标值
-//		points_mat->data.fl[i * 3 + 2] = this->Points3ds[i].z;//  Z的坐标值</span>
-//	}
-//	float* plane = (float*)malloc(sizeof(float) * 4);
-//	// Estimate geometric centroid.
-//	int nrows = points_mat->rows;
-//	int ncols = points_mat->cols;
-//	int type = points_mat->type;
-//	//cout << "nrows" << nrows << "ncols" << ncols << "type" << type << endl;
-//	//创建了一个一行3列的矩阵
-//	CvMat* centroid = cvCreateMat(1, ncols, type);
-//	//填充为0 [0,0,0]
-//	cvSet(centroid, cvScalar(0));
-//	//cout << centroid->data.fl << endl;
-//	//求出所有点的平均x，y,z
-//	for (int c = 0; c < ncols; c++) {
-//		for (int r = 0; r < nrows; r++)
-//		{
-//			//所有的x，y,z相加
-//			centroid->data.fl[c] += points_mat->data.fl[ncols * r + c];
-//		}
-//		//除以点的数目，得到平均值
-//		centroid->data.fl[c] /= nrows;
-//	}
-//	// Subtract geometric centroid from each point.
-//	//创建一个点数行，3列的矩阵，存储点与平均位置的偏移，实际-平均位置
-//	CvMat* points2 = cvCreateMat(nrows, ncols, type);
-//	for (int r = 0; r < nrows; r++)
-//		for (int c = 0; c < ncols; c++)
-//			points2->data.fl[ncols * r + c] = points_mat->data.fl[ncols * r + c] - centroid->data.fl[c];
-//	// Evaluate SVD of covariance matrix.
-//	//计算协方差矩阵的SVD
-//	CvMat* A_mat = cvCreateMat(ncols, ncols, type);
-//	CvMat* W_mat = cvCreateMat(ncols, ncols, type);
-//	CvMat* V_mat = cvCreateMat(ncols, ncols, type);
-//	//协方差矩阵计算方法
-//	//covMatrix=X(t)*X/(m-1)
-//	//cvGEMM广义矩阵乘法，下面这条语句的意思是
-//	//A_mat=1*points2.inv()*points_mat
-//	//
-//	cvGEMM(points2, points_mat, 1, NULL, 0, A_mat, CV_GEMM_A_T);
-//	cvSVD(A_mat, W_mat, NULL, V_mat, CV_SVD_V_T);
-//	// Assign plane coefficients by singular vector corresponding to smallest singular value.
-//	plane[ncols] = 0;
-//	for (int c = 0; c < ncols; c++) {
-//		plane[c] = V_mat->data.fl[ncols * (ncols - 1) + c];
-//		plane[ncols] += plane[c] * centroid->data.fl[c];
-//	}
-//	this->A = plane[0];
-//	this->B = plane[1];
-//	this->C = plane[2];
-//	this->D = plane[3];
-//	//cout << "A" << A << "B" << B << "C" << C << "D" << D << endl;
-//
-//	// Release allocated resources.
-//	cvReleaseMat(&centroid);
-//	cvReleaseMat(&points2);
-//	cvReleaseMat(&A_mat);
-//	cvReleaseMat(&W_mat);
-//	cvReleaseMat(&V_mat);
-//}
-
 /// <summary>
 /// 加载无激光的标定板，计算出外参
 /// </summary>
@@ -452,7 +382,6 @@ void LaserPlane::LoadLaser(vector<cv::Mat> BoardLaser, CalibrateCamera* camera)
 			//rotationMatrix1 * (Point3d_mat - *it2)计算出了世界坐标对应的相机坐标
 			//Po=R-1*Pc+T
 			//计算出了在基准下的世界坐标
-			//Mat Point3d_toBase_mat = rotationMatrix2.inv() * rotationMatrix1 * (Point3d_mat - *it2) + camera->GetBaseTvecMat();
 			cv::Mat Point3d_toBase_mat = rotationMatrix2.inv() * rotationMatrix1 * (Point3d_mat - *it2) + camera->GetBaseTvecMat();
 			//
 			//cout << "基准Z：" << Point3d_toBase_mat.at<double>(2, 0) << endl;

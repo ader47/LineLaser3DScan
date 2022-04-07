@@ -52,9 +52,15 @@
     <ClCompile Include="MyMatQuery.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Threads.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Threads.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

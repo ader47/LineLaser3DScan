@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'mainwindowdiKwNM.ui'
+** Form generated from reading UI file 'mainwindow.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.15.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef MAINWINDOWDIKWNM_H
-#define MAINWINDOWDIKWNM_H
+#ifndef UI_MAINWINDOW_H
+#define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
@@ -46,14 +46,25 @@ public:
     QGroupBox *groupBox_12;
     QVBoxLayout *verticalLayout_3;
     QGroupBox *groupBox_10;
+    QGridLayout *gridLayout_7;
+    QWidget *widget;
     QGroupBox *groupBox_13;
     QLabel *label_2;
     QGroupBox *groupBox_9;
     QGroupBox *groupBox_11;
     QVBoxLayout *verticalLayout;
     QGroupBox *groupBox_6;
+    QGridLayout *gridLayout_4;
+    QLabel *label_11;
+    QPushButton *pushButton_flashcamera;
+    QComboBox *comboBox_camera_select;
     QGroupBox *groupBox_14;
     QGroupBox *groupBox_7;
+    QGridLayout *gridLayout_8;
+    QPushButton *pushButton_camerastart;
+    QPushButton *pushButton_camerapause;
+    QPushButton *pushButton_camerastop;
+    QPushButton *pushButton_cameracontinue;
     QGroupBox *groupBox_8;
     QWidget *tab_2;
     QGridLayout *gridLayout_3;
@@ -76,12 +87,9 @@ public:
     QListWidget *listWidget_LaserLine;
     QGroupBox *groupBox_3;
     QGridLayout *gridLayout_2;
-    QRadioButton *radioButton_Y_add;
-    QRadioButton *radioButton_X_add;
     QComboBox *comboBox_Methods;
-    QPushButton *pushButton_Caculate;
-    QLabel *label;
-    QSpinBox *spinBox_6;
+    QPushButton *pushButton;
+    QLabel *label_12;
     QGroupBox *groupBox_5;
     QGridLayout *gridLayout;
     QLabel *label_8;
@@ -97,8 +105,15 @@ public:
     QSpinBox *spinBox_4;
     QLabel *label_6;
     QCheckBox *checkBox_3;
+    QSpinBox *spinBox_6;
+    QRadioButton *radioButton_X_add;
+    QLabel *label;
+    QRadioButton *radioButton_Y_add;
+    QPushButton *pushButton_Caculate;
     QLabel *label_10;
-    QPushButton *pushButton;
+    QLabel *label_13;
+    QSpinBox *spinBox_8;
+    QDoubleSpinBox *doubleSpinBox_2;
     QWidget *tab_3;
     QVBoxLayout *verticalLayout_2;
     QVTKWidget *qvtkWidget;
@@ -136,7 +151,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1337, 768);
+        MainWindow->resize(1214, 797);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         verticalLayout_4 = new QVBoxLayout(centralwidget);
@@ -154,6 +169,15 @@ public:
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
         groupBox_10 = new QGroupBox(groupBox_12);
         groupBox_10->setObjectName(QString::fromUtf8("groupBox_10"));
+        groupBox_10->setMinimumSize(QSize(640, 360));
+        groupBox_10->setMaximumSize(QSize(1920, 1080));
+        gridLayout_7 = new QGridLayout(groupBox_10);
+        gridLayout_7->setObjectName(QString::fromUtf8("gridLayout_7"));
+        widget = new QWidget(groupBox_10);
+        widget->setObjectName(QString::fromUtf8("widget"));
+
+        gridLayout_7->addWidget(widget, 0, 0, 1, 1);
+
 
         verticalLayout_3->addWidget(groupBox_10);
 
@@ -183,6 +207,24 @@ public:
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         groupBox_6 = new QGroupBox(groupBox_11);
         groupBox_6->setObjectName(QString::fromUtf8("groupBox_6"));
+        groupBox_6->setMaximumSize(QSize(16777215, 90));
+        gridLayout_4 = new QGridLayout(groupBox_6);
+        gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
+        label_11 = new QLabel(groupBox_6);
+        label_11->setObjectName(QString::fromUtf8("label_11"));
+
+        gridLayout_4->addWidget(label_11, 3, 0, 1, 1);
+
+        pushButton_flashcamera = new QPushButton(groupBox_6);
+        pushButton_flashcamera->setObjectName(QString::fromUtf8("pushButton_flashcamera"));
+
+        gridLayout_4->addWidget(pushButton_flashcamera, 3, 1, 1, 1);
+
+        comboBox_camera_select = new QComboBox(groupBox_6);
+        comboBox_camera_select->setObjectName(QString::fromUtf8("comboBox_camera_select"));
+
+        gridLayout_4->addWidget(comboBox_camera_select, 0, 0, 1, 2);
+
 
         verticalLayout->addWidget(groupBox_6);
 
@@ -193,6 +235,29 @@ public:
 
         groupBox_7 = new QGroupBox(groupBox_11);
         groupBox_7->setObjectName(QString::fromUtf8("groupBox_7"));
+        groupBox_7->setMaximumSize(QSize(16777215, 90));
+        gridLayout_8 = new QGridLayout(groupBox_7);
+        gridLayout_8->setObjectName(QString::fromUtf8("gridLayout_8"));
+        pushButton_camerastart = new QPushButton(groupBox_7);
+        pushButton_camerastart->setObjectName(QString::fromUtf8("pushButton_camerastart"));
+
+        gridLayout_8->addWidget(pushButton_camerastart, 0, 0, 1, 1);
+
+        pushButton_camerapause = new QPushButton(groupBox_7);
+        pushButton_camerapause->setObjectName(QString::fromUtf8("pushButton_camerapause"));
+
+        gridLayout_8->addWidget(pushButton_camerapause, 0, 1, 1, 1);
+
+        pushButton_camerastop = new QPushButton(groupBox_7);
+        pushButton_camerastop->setObjectName(QString::fromUtf8("pushButton_camerastop"));
+
+        gridLayout_8->addWidget(pushButton_camerastop, 1, 0, 1, 1);
+
+        pushButton_cameracontinue = new QPushButton(groupBox_7);
+        pushButton_cameracontinue->setObjectName(QString::fromUtf8("pushButton_cameracontinue"));
+
+        gridLayout_8->addWidget(pushButton_cameracontinue, 1, 1, 1, 1);
+
 
         verticalLayout->addWidget(groupBox_7);
 
@@ -298,37 +363,22 @@ public:
         groupBox_3->setStyleSheet(QString::fromUtf8("QGroupBox{border:none}"));
         gridLayout_2 = new QGridLayout(groupBox_3);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
-        radioButton_Y_add = new QRadioButton(groupBox_3);
-        radioButton_Y_add->setObjectName(QString::fromUtf8("radioButton_Y_add"));
-
-        gridLayout_2->addWidget(radioButton_Y_add, 1, 2, 1, 1);
-
-        radioButton_X_add = new QRadioButton(groupBox_3);
-        radioButton_X_add->setObjectName(QString::fromUtf8("radioButton_X_add"));
-
-        gridLayout_2->addWidget(radioButton_X_add, 1, 1, 1, 1);
-
         comboBox_Methods = new QComboBox(groupBox_3);
         comboBox_Methods->setObjectName(QString::fromUtf8("comboBox_Methods"));
         comboBox_Methods->setMinimumSize(QSize(0, 20));
 
-        gridLayout_2->addWidget(comboBox_Methods, 0, 1, 1, 2);
+        gridLayout_2->addWidget(comboBox_Methods, 0, 3, 1, 2);
 
-        pushButton_Caculate = new QPushButton(groupBox_3);
-        pushButton_Caculate->setObjectName(QString::fromUtf8("pushButton_Caculate"));
-        pushButton_Caculate->setMinimumSize(QSize(0, 25));
+        pushButton = new QPushButton(groupBox_3);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setMinimumSize(QSize(0, 25));
 
-        gridLayout_2->addWidget(pushButton_Caculate, 0, 4, 1, 1);
+        gridLayout_2->addWidget(pushButton, 0, 7, 1, 1);
 
-        label = new QLabel(groupBox_3);
-        label->setObjectName(QString::fromUtf8("label"));
+        label_12 = new QLabel(groupBox_3);
+        label_12->setObjectName(QString::fromUtf8("label_12"));
 
-        gridLayout_2->addWidget(label, 0, 0, 1, 1);
-
-        spinBox_6 = new QSpinBox(groupBox_3);
-        spinBox_6->setObjectName(QString::fromUtf8("spinBox_6"));
-
-        gridLayout_2->addWidget(spinBox_6, 1, 5, 1, 1);
+        gridLayout_2->addWidget(label_12, 0, 0, 1, 1);
 
         groupBox_5 = new QGroupBox(groupBox_3);
         groupBox_5->setObjectName(QString::fromUtf8("groupBox_5"));
@@ -401,18 +451,54 @@ public:
         gridLayout->addWidget(checkBox_3, 1, 11, 1, 1);
 
 
-        gridLayout_2->addWidget(groupBox_5, 0, 7, 2, 1);
+        gridLayout_2->addWidget(groupBox_5, 0, 9, 2, 1);
+
+        spinBox_6 = new QSpinBox(groupBox_3);
+        spinBox_6->setObjectName(QString::fromUtf8("spinBox_6"));
+
+        gridLayout_2->addWidget(spinBox_6, 1, 7, 1, 1);
+
+        radioButton_X_add = new QRadioButton(groupBox_3);
+        radioButton_X_add->setObjectName(QString::fromUtf8("radioButton_X_add"));
+
+        gridLayout_2->addWidget(radioButton_X_add, 1, 3, 1, 1);
+
+        label = new QLabel(groupBox_3);
+        label->setObjectName(QString::fromUtf8("label"));
+
+        gridLayout_2->addWidget(label, 0, 2, 1, 1);
+
+        radioButton_Y_add = new QRadioButton(groupBox_3);
+        radioButton_Y_add->setObjectName(QString::fromUtf8("radioButton_Y_add"));
+
+        gridLayout_2->addWidget(radioButton_Y_add, 1, 4, 1, 1);
+
+        pushButton_Caculate = new QPushButton(groupBox_3);
+        pushButton_Caculate->setObjectName(QString::fromUtf8("pushButton_Caculate"));
+        pushButton_Caculate->setMinimumSize(QSize(0, 25));
+
+        gridLayout_2->addWidget(pushButton_Caculate, 0, 6, 1, 1);
 
         label_10 = new QLabel(groupBox_3);
         label_10->setObjectName(QString::fromUtf8("label_10"));
+        label_10->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
-        gridLayout_2->addWidget(label_10, 1, 4, 1, 1);
+        gridLayout_2->addWidget(label_10, 1, 6, 1, 1);
 
-        pushButton = new QPushButton(groupBox_3);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setMinimumSize(QSize(0, 25));
+        label_13 = new QLabel(groupBox_3);
+        label_13->setObjectName(QString::fromUtf8("label_13"));
 
-        gridLayout_2->addWidget(pushButton, 0, 5, 1, 1);
+        gridLayout_2->addWidget(label_13, 0, 1, 1, 1);
+
+        spinBox_8 = new QSpinBox(groupBox_3);
+        spinBox_8->setObjectName(QString::fromUtf8("spinBox_8"));
+
+        gridLayout_2->addWidget(spinBox_8, 1, 1, 1, 1);
+
+        doubleSpinBox_2 = new QDoubleSpinBox(groupBox_3);
+        doubleSpinBox_2->setObjectName(QString::fromUtf8("doubleSpinBox_2"));
+
+        gridLayout_2->addWidget(doubleSpinBox_2, 1, 0, 1, 1);
 
 
         gridLayout_3->addWidget(groupBox_3, 1, 0, 1, 1);
@@ -553,7 +639,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1337, 23));
+        menubar->setGeometry(QRect(0, 0, 1214, 23));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -577,8 +663,14 @@ public:
         groupBox_9->setTitle(QCoreApplication::translate("MainWindow", "\347\204\212\346\216\245\346\216\247\345\210\266", nullptr));
         groupBox_11->setTitle(QString());
         groupBox_6->setTitle(QCoreApplication::translate("MainWindow", "\347\233\270\346\234\272\351\200\211\346\213\251", nullptr));
+        label_11->setText(QCoreApplication::translate("MainWindow", "\345\237\272\346\234\254\344\277\241\346\201\257", nullptr));
+        pushButton_flashcamera->setText(QCoreApplication::translate("MainWindow", "\345\210\267\346\226\260\347\233\270\346\234\272", nullptr));
         groupBox_14->setTitle(QCoreApplication::translate("MainWindow", "\345\257\274\350\275\250\346\216\247\345\210\266", nullptr));
         groupBox_7->setTitle(QCoreApplication::translate("MainWindow", "\350\247\246\345\217\221\346\216\247\345\210\266", nullptr));
+        pushButton_camerastart->setText(QCoreApplication::translate("MainWindow", "Start", nullptr));
+        pushButton_camerapause->setText(QCoreApplication::translate("MainWindow", "Pause", nullptr));
+        pushButton_camerastop->setText(QCoreApplication::translate("MainWindow", "Stop", nullptr));
+        pushButton_cameracontinue->setText(QCoreApplication::translate("MainWindow", "Continue", nullptr));
         groupBox_8->setTitle(QCoreApplication::translate("MainWindow", "\351\242\204\345\244\204\347\220\206", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
         groupBox_2->setTitle(QString());
@@ -590,10 +682,8 @@ public:
         BN_Select_Base_Picture->setText(QCoreApplication::translate("MainWindow", "\351\200\211\346\213\251\347\202\271\344\272\221\346\213\274\346\216\245\345\237\272\345\207\206\345\233\276\347\211\207", nullptr));
         groupBox->setTitle(QString());
         groupBox_3->setTitle(QString());
-        radioButton_Y_add->setText(QCoreApplication::translate("MainWindow", "Y\346\226\271\345\220\221\346\213\274\346\216\245", nullptr));
-        radioButton_X_add->setText(QCoreApplication::translate("MainWindow", "X\350\275\264\346\226\271\345\220\221\346\213\274\346\216\245", nullptr));
-        pushButton_Caculate->setText(QCoreApplication::translate("MainWindow", "\344\273\205\350\256\241\347\256\227\346\240\207\345\256\232\345\217\202\346\225\260", nullptr));
-        label->setText(QCoreApplication::translate("MainWindow", "\344\270\255\345\277\203\347\272\277\346\217\220\345\217\226\347\256\227\346\263\225\357\274\232", nullptr));
+        pushButton->setText(QCoreApplication::translate("MainWindow", "\350\256\241\347\256\227\351\207\215\345\273\272", nullptr));
+        label_12->setText(QCoreApplication::translate("MainWindow", "\346\273\244\346\263\242\345\215\212\345\276\204", nullptr));
         groupBox_5->setTitle(QString());
         label_8->setText(QCoreApplication::translate("MainWindow", "\345\215\267\347\247\257\346\240\270Y\346\240\207\345\207\206\345\267\256", nullptr));
         label_7->setText(QCoreApplication::translate("MainWindow", "\345\215\267\347\247\257\346\240\270X\346\240\207\345\207\206\345\267\256", nullptr));
@@ -602,8 +692,12 @@ public:
         label_5->setText(QCoreApplication::translate("MainWindow", "\345\215\267\347\247\257\346\240\270Y", nullptr));
         label_6->setText(QCoreApplication::translate("MainWindow", "\347\241\256\345\256\232\347\262\276\345\272\246", nullptr));
         checkBox_3->setText(QCoreApplication::translate("MainWindow", "\344\272\232\345\203\217\347\264\240", nullptr));
+        radioButton_X_add->setText(QCoreApplication::translate("MainWindow", "X\350\275\264\346\226\271\345\220\221\346\213\274\346\216\245", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "\344\270\255\345\277\203\347\272\277\346\217\220\345\217\226\347\256\227\346\263\225\357\274\232", nullptr));
+        radioButton_Y_add->setText(QCoreApplication::translate("MainWindow", "Y\346\226\271\345\220\221\346\213\274\346\216\245", nullptr));
+        pushButton_Caculate->setText(QCoreApplication::translate("MainWindow", "\344\273\205\350\256\241\347\256\227\346\240\207\345\256\232\345\217\202\346\225\260", nullptr));
         label_10->setText(QCoreApplication::translate("MainWindow", "\346\255\245\351\225\277\351\227\264\351\232\224\357\274\232", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "\350\256\241\347\256\227\351\207\215\345\273\272", nullptr));
+        label_13->setText(QCoreApplication::translate("MainWindow", "\347\202\271\344\270\252\346\225\260", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
         groupBox_4->setTitle(QCoreApplication::translate("MainWindow", "CloudSetting", nullptr));
         Lable_Size->setText(QCoreApplication::translate("MainWindow", "Size:", nullptr));
@@ -632,4 +726,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // MAINWINDOWDIKWNM_H
+#endif // UI_MAINWINDOW_H

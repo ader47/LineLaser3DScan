@@ -84,17 +84,22 @@ std::vector<double> ProcessTool::AverageLine(cv::Mat img0, cv::Point2d leftup, c
 
 std::vector<double> ProcessTool::StegerLine(cv::Mat img0,int col,int row,int sqrtx,int sqrty,int shreshold,float distance,bool isFloat)
 {
+	if (img0.channels() == 3)
+		cvtColor(img0,img0, CV_BGR2GRAY);
 	cv::Mat img;
-	cvtColor(img0, img0, CV_BGR2GRAY);
 	img = img0.clone();
 	//高斯滤波
 	img.convertTo(img, CV_32FC1);
 	//奇数,选择线宽
 	GaussianBlur(img, img, cv::Size(col, row), sqrtx, sqrty);
-	//GaussianBlur(img, img, cv::Size(25, 25), 6, 6);
+
+	//cv::threshold(img, img, 70, 255, cv::THRESH_BINARY);
+	//cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5), cv::Point(-1, -1));
+	//cv::morphologyEx(img, img, CV_MOP_OPEN, kernel);
+
 	//高斯卷积，得到一个山峰强度的光条图
 	//高斯卷积核实际上就是一个正态函数
-
+	// 
 	//构造了求导数的卷积核
 	//这里使用的是数值计算的偏导数而非得到求导公式
 	cv::Mat m1, m2;

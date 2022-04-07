@@ -7,7 +7,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
     ui->tabWidget->setTabText(0,"采集");
     ui->tabWidget->setTabText(1,"标定");
@@ -155,19 +154,108 @@ MainWindow::MainWindow(QWidget *parent)
     getlinemethod = Steger;
 
     
+    int num = listDevices(CameraName);
+    for (int i = 0; i < num; i++)
+        ui->comboBox_camera_select->addItem(QString::number(i)+":"+QString::fromStdString(CameraName[i]));
     viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
     ui->qvtkWidget->SetRenderWindow(viewer->getRenderWindow());
     viewer->setupInteractor(ui->qvtkWidget->GetInteractor(), ui->qvtkWidget->GetRenderWindow());
     ui->qvtkWidget->update();
     ui->radioButton_X_add->setChecked(true);
+
+    cv::namedWindow(winName, cv::WINDOW_AUTOSIZE);
+    HWND hwnd = (HWND)cvGetWindowHandle(winName.c_str());
+    HWND paraent = GetParent(hwnd);//得到nameWindow窗口的父句柄
+    SetParent(hwnd, (HWND)ui->widget->winId());//设置ui控件的句柄是父句柄
+    ShowWindow(paraent, SW_HIDE);//隐藏掉nameWindow窗口
+    cv::resizeWindow(winName, cv::Size(ui->widget->width(), ui->widget->height()));
+
+    CameraDisp = NULL;
+    tim = new QTimer();
+    tim->setInterval(100);
+    connect(tim, SIGNAL(timeout()), this, SLOT(onTimeOut()));
+    tim->start();
+    
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+/// <summary>
+/// 获取相机列表
+/// </summary>
+/// <param name="list"></param>
+/// <returns></returns>
+int MainWindow::listDevices(vector<string>& list)
+{
+    ICreateDevEnum* pDevEnum = NULL;
+    IEnumMoniker* pEnum = NULL;
+    int deviceCounter = 0;
+    CoInitialize(NULL);
 
+    HRESULT hr = CoCreateInstance(
+        CLSID_SystemDeviceEnum,
+        NULL,
+        CLSCTX_INPROC_SERVER,
+        IID_ICreateDevEnum,
+        reinterpret_cast<void**>(&pDevEnum)
+    );
 
+    if (SUCCEEDED(hr))
+    {
+        hr = pDevEnum->CreateClassEnumerator(CLSID_VideoInputDeviceCategory, &pEnum, 0);
+        if (hr == S_OK) {
+
+            IMoniker* pMoniker = NULL;
+            while (pEnum->Next(1, &pMoniker, NULL) == S_OK)
+            {
+                IPropertyBag* pPropBag;
+                hr = pMoniker->BindToStorage(0, 0, IID_IPropertyBag,
+                    (void**)(&pPropBag));
+
+                if (FAILED(hr)) {
+                    pMoniker->Release();
+                    continue; // Skip this one, maybe the next one will work.
+                }
+
+                VARIANT varName;
+                VariantInit(&varName);
+                hr = pPropBag->Read(L"Description", &varName, 0);
+                if (FAILED(hr))
+                {
+                    hr = pPropBag->Read(L"FriendlyName", &varName, 0);
+                }
+
+                if (SUCCEEDED(hr))
+                {
+                    hr = pPropBag->Read(L"FriendlyName", &varName, 0);
+                    int count = 0;
+                    char tmp[255] = { 0 };
+                    while (varName.bstrVal[count] != 0x00 && count < 255)
+                    {
+                        tmp[count] = (char)varName.bstrVal[count];
+                        count++;
+                    }
+                    list.push_back(tmp);
+                }
+
+                pPropBag->Release();
+                pPropBag = NULL;
+
+                pMoniker->Release();
+                pMoniker = NULL;
+                deviceCounter++;
+            }
+            pDevEnum->Release();
+            pDevEnum = NULL;
+
+            pEnum->Release();
+            pEnum = NULL;
+        }
+    }
+    return deviceCounter;
+}
 
 void MainWindow::setEven(int value)
 {
@@ -232,7 +320,7 @@ void MainWindow::on_BN_Select_Clib_Picture_clicked()
     QStringList fileName = QFileDialog::getOpenFileNames(
         this,
         QStringLiteral("选择相机标定图片"),
-        "D:/Image",
+        "D:/2021_9_18/calibrate_camera",
         tr("images(*.png *jpeg *bmp);;All files(*.*)"));
     QList<QString>::Iterator it = fileName.begin();
     ui->textBrowser->append(QString::fromStdString("共选择" + std::to_string(fileName.length()) + "标定图片"));
@@ -257,7 +345,7 @@ void MainWindow::on_BN_Select_Base_Picture_clicked()
     QStringList fileName = QFileDialog::getOpenFileNames(
         this,
         QStringLiteral("选择拼接基准"),
-        "D:/Image",
+        "D:/2021_9_18/calibrate_camera",
         tr("images(*.png *jpeg *bmp);;All files(*.*)"));
     if (fileName.length() != 1)
     {
@@ -290,7 +378,7 @@ void MainWindow::on_BN_Select_Board_noLaser_clicked()
     QStringList fileName = QFileDialog::getOpenFileNames(
         this,
         QStringLiteral(""),
-        "D:/Image",
+        "D:/2021_9_18/calibrate_line",
         tr("images(*.png *jpeg *bmp);;All files(*.*)"));
 
         QList<QString>::Iterator it = fileName.begin();
@@ -314,7 +402,7 @@ void MainWindow::on_BN_Select_Board_Laser_clicked()
     QStringList fileName = QFileDialog::getOpenFileNames(
         this,
         QStringLiteral(""),
-        "D:/Image",
+        "D:/2021_9_18/calibrate_line",
         tr("images(*.png *jpeg *bmp);;All files(*.*)"));
         QList<QString>::Iterator it = fileName.begin();
 
@@ -339,7 +427,7 @@ void MainWindow::on_BN_Select_Step_Pic_clicked()
     QStringList fileName = QFileDialog::getOpenFileNames(
         this,
         QStringLiteral(""),
-        "D:/Image",
+        "D:/2021_9_18/calibrate_step",
         tr("images(*.png *jpeg *bmp);;All files(*.*)"));
 
         QList<QString>::Iterator it = fileName.begin();
@@ -364,7 +452,7 @@ void MainWindow::on_BN_Select_LaserLine_clicked()
     QStringList fileName = QFileDialog::getOpenFileNames(
         this,
         QStringLiteral(""),
-        "D:/Image",
+        "D:/2021_9_18/line",
         tr("images(*.png *jpeg *bmp);;All files(*.*)"));
 
     QList<QString>::Iterator it = fileName.begin();
@@ -421,6 +509,13 @@ void MainWindow::on_pushButton_Caculate_clicked()
         ui->textBrowser->append("============================finish calibrate============================");
         isCalibed = true;
         ui->label_flagCalibed->setText("Yes");
+
+        Camera_Calib.clear();
+        Plane_Board_noLaser.clear();
+        Plane_Laser.clear();
+        Step_Calculate.clear();
+        Scan_Laser.clear();
+
         QMessageBox::information(this, "info", "Calibrate finished!", QMessageBox::Ok);
     }
     else
@@ -441,6 +536,8 @@ void MainWindow::on_pushButton_clicked()
         for (vector<cv::Mat>::iterator it = Scan_Laser.begin(); it != Scan_Laser.end(); it++, k++)
         {
             vector<double> Points;
+            cvtColor(*it, *it, CV_RGB2GRAY);
+           // threshold(*it, *it, 0, 255, cv::THRESH_OTSU);
             switch (ui->comboBox_Methods->currentIndex())
             {
             case 0:
@@ -475,20 +572,34 @@ void MainWindow::on_pushButton_clicked()
         }
         ui->textBrowser->append("deep caculate finished");
         ui->textBrowser->append("clearing scan laser images");
-        Scan_Laser.clear();
-        ui->listWidget_LaserLine->clear();
+        //Scan_Laser.clear();
+        //ui->listWidget_LaserLine->clear();
         ui->textBrowser->append("cleared");
         ui->textBrowser->append("showing cloud....");
         //滤波处理
-        pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_after_StatisticalRemoval(new pcl::PointCloud<pcl::PointXYZRGB>);//
-        pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> Statistical;
-        Statistical.setInputCloud(cloud);
-        Statistical.setMeanK(50);//取平均值的临近点数
-        Statistical.setStddevMulThresh(0.5);//临近点数数目少于多少时会被舍弃
-        Statistical.filter(*cloud_after_StatisticalRemoval);
+        //半径滤波
+        //创建环境
+        pcl::RadiusOutlierRemoval<pcl::PointXYZRGB> outrem;
+        cloud_filtered.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+        (*cloud_filtered).points.resize(Points3d_all.size());
+        // 创建滤波器
+        outrem.setInputCloud(cloud);//设置输入点云
+        //像素点和点的个数？
+        outrem.setRadiusSearch(ui->doubleSpinBox_2->value());//设置在0.8的半径内找临近点
+        outrem.setMinNeighborsInRadius(ui->spinBox_8->value());//设置查询点的邻近点集数小于2的删除
+        // 应用滤波器
+        outrem.filter(*cloud_filtered);
 
-        viewer->addPointCloud(cloud_after_StatisticalRemoval, "cloud");
-        viewer->updatePointCloud(cloud_after_StatisticalRemoval, "cloud");
+        //统计滤波
+        //pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_after_StatisticalRemoval(new pcl::PointCloud<pcl::PointXYZRGB>);//
+        //pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> Statistical;
+        //Statistical.setInputCloud(cloud);
+        //Statistical.setMeanK(50);//取平均值的临近点数
+        //Statistical.setStddevMulThresh(0.5);//临近点数数目少于多少时会被舍弃
+        //Statistical.filter(*cloud_after_StatisticalRemoval);
+
+        viewer->addPointCloud(cloud_filtered, "cloud");
+        viewer->updatePointCloud(cloud_filtered, "cloud");
         //viewer->addPointCloud(cloud, "cloud");
         //viewer->updatePointCloud(cloud, "cloud");
         viewer->resetCamera();
@@ -531,6 +642,8 @@ void MainWindow::on_pushButton_clearClib_clicked()
         ui->listWidget_Board_noLaser->clear();
         ui->listWidget_CalibPic->clear();
         ui->listWidget_Step_Pic->clear();
+        cloud->points.clear();
+        ui->listWidget_LaserLine->clear();
         ui->textBrowser_2->append("======================abandoned=======================");
         ui->label_flagCalibed->setText("No");
         delete camera;
@@ -544,23 +657,24 @@ void MainWindow::on_pushButton_clearClib_clicked()
 
 void MainWindow::RGBsliderReleased()
 {
-    if (cloud!=NULL&&viewer!=NULL)
+    if (cloud_filtered !=NULL&&viewer!=NULL)
     {
-        for (size_t i = 0; i < cloud->size(); i++)
+        for (size_t i = 0; i < cloud_filtered->size(); i++)
         {
-            cloud->points[i].r = red;
-            cloud->points[i].g = green;
-            cloud->points[i].b = blue;
+            cloud_filtered->points[i].r = red;
+            cloud_filtered->points[i].g = green;
+            cloud_filtered->points[i].b = blue;
         }
-        viewer->updatePointCloud(cloud, "cloud");
+        viewer->updatePointCloud(cloud_filtered, "cloud");
         ui->qvtkWidget->update();
     }
 }
 
 void MainWindow::on_pushButton_cloud_clear_clicked()
 {
-    if (cloud != NULL)
+    if (cloud_filtered != NULL)
     {
+        cloud_filtered->points.clear();
         cloud->points.clear();
         viewer->updatePointCloud(cloud, "cloud");
         viewer->resetCamera();
@@ -571,16 +685,70 @@ void MainWindow::on_pushButton_cloud_clear_clicked()
         QMessageBox::information(this,"info","Points cloud has not initialed!");
 }
 
+void MainWindow::on_pushButton_flashcamera_clicked()
+{
+    ui->comboBox_camera_select->clear();
+    this->CameraName.clear();
+    int num = this->listDevices(this->CameraName);
+    if (num == 0)
+        QMessageBox::warning(this,"warning","No Camera Connected!");
+    else
+    {
+        for (int i = 0; i < num; i++)
+            ui->comboBox_camera_select->addItem(QString::number(i) + ":" + QString::fromStdString(CameraName[i]));
+        QMessageBox::information(this,"info","Success!");
+    }
+}
+
 void MainWindow::pSliderValueChanged(int value)
 {
     size = value;
-    if (cloud != NULL && viewer != NULL)
+    if (cloud_filtered != NULL && viewer != NULL)
     {
         viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "cloud");
         ui->qvtkWidget->update();
     }
 }
 
+
+void MainWindow::on_pushButton_camerastart_clicked()
+{
+    if (!CameraDisp)
+    {
+        CameraDisp = new CameraDisplay(ui->comboBox_camera_select->currentIndex(), winName, this);
+        CameraDisp->start();
+    }
+}
+
+void MainWindow::on_pushButton_camerapause_clicked()
+{
+    CameraDisp->mutex.lock();
+}
+
+void MainWindow::on_pushButton_cameracontinue_clicked()
+{
+    CameraDisp->mutex.unlock();
+}
+
+void MainWindow::on_pushButton_camerastop_clicked()
+{
+    if (CameraDisp)
+    {
+        CameraDisp->StopThread();
+        CameraDisp->deleteLater();
+        CameraDisp->wait();
+        CameraDisp->destroyed();
+        delete CameraDisp;
+        CameraDisp = NULL;
+        if(!CameraDisp)
+            QMessageBox::information(this,"info","Stoped!");
+    }
+}
+void MainWindow::onTimeOut()
+{
+    //if (CameraDisp)
+        //ui->label_2->setText(QString::number(CameraDisp->GetFPS())+"fps");
+}
 void MainWindow::redSliderValueChanged(int value)
 {
     red = value;

@@ -194,6 +194,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="MyMatQuery.cpp" />
+    <ClCompile Include="Threads.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
@@ -225,6 +226,7 @@
     <ClInclude Include="Calibrate.h" />
     <ClInclude Include="ImageProcess.h" />
     <ClInclude Include="MyMatQuery.h" />
+    <QtMoc Include="Threads.h" />
     <ClInclude Include="ui_mainwindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
