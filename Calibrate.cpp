@@ -352,7 +352,7 @@ void LaserPlane::LoadLaser(vector<cv::Mat> BoardLaser, CalibrateCamera* camera)
 		//Mat rod_lightline = imread(*it0, CV_LOAD_IMAGE_GRAYSCALE);
 		cv::Mat rod_lightline = *it0;
 		//这里可以改成步长和种子点搜索法
-		threshold(rod_lightline, rod_lightline, 80, 255, cv::THRESH_BINARY);
+		threshold(rod_lightline, rod_lightline, 150, 255, cv::THRESH_BINARY);
 		for (size_t i = 0; i < rod_lightline.rows; i++)
 		{
 			int sum = 0; int num = 0; size_t j = 0;

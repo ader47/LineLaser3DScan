@@ -83,7 +83,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->horizontalSlider_Size, SIGNAL(valueChanged(int)), ui->spinBox_size, SLOT(setValue(int)));
     connect(ui->spinBox_size, SIGNAL(valueChanged(int)), ui->horizontalSlider_Size, SLOT(setValue(int)));
 
-
     connect(ui->horizontalSlider_Red, SIGNAL(valueChanged(int)), this, SLOT(redSliderValueChanged(int)));
     connect(ui->horizontalSlider_Green, SIGNAL(valueChanged(int)), this, SLOT(greenSliderValueChanged(int)));
     connect(ui->horizontalSlider_Blue, SIGNAL(valueChanged(int)), this, SLOT(blueSliderValueChanged(int)));
@@ -158,6 +157,7 @@ MainWindow::MainWindow(QWidget *parent)
     for (int i = 0; i < num; i++)
         ui->comboBox_camera_select->addItem(QString::number(i)+":"+QString::fromStdString(CameraName[i]));
     viewer.reset(new pcl::visualization::PCLVisualizer("viewer", false));
+    viewer->addCoordinateSystem();
     ui->qvtkWidget->SetRenderWindow(viewer->getRenderWindow());
     viewer->setupInteractor(ui->qvtkWidget->GetInteractor(), ui->qvtkWidget->GetRenderWindow());
     ui->qvtkWidget->update();
@@ -483,6 +483,14 @@ void MainWindow::on_pushButton_Caculate_clicked()
         CalibrateBoard* caliboard = new CalibrateBoard(Camera_Calib.size(), 7, 7, 7);
         camera->calibrate(caliboard);
         isCameraCalib = true;
+        //输出内参数
+        ui->textBrowser_2->append("CameraMatrix:");
+        ui->textBrowser_2->append("fx = "+QString::number(camera->GetCameraMatrix().at<double>(0, 0)));
+        ui->textBrowser_2->append("fy = " + QString::number(camera->GetCameraMatrix().at<double>(1, 1)));
+        ui->textBrowser_2->append("cx = "+QString::number(camera->GetCameraMatrix().at<double>(0, 2)));
+        ui->textBrowser_2->append("cy = "+QString::number(camera->GetCameraMatrix().at<double>(1, 2)));
+
+        ui->textBrowser_2->append("Calibrate errors:");
         //输出标定误差
         for (int i = 0; i < camera->GetImageNum(); i++)	
             ui->textBrowser_2->append("No."+ QString::number(i) +": " + QString::number(*(camera->GetErr_ALL() + i)) + " Pixel");
@@ -492,7 +500,7 @@ void MainWindow::on_pushButton_Caculate_clicked()
         camera->BaseCaculate(Base, caliboard);
         isBaseCalib = true;
         ui->textBrowser->append("base caculate finished");
-        //////光平面
+        //光平面
         CalibrateBoard* PlaneBoard = new CalibrateBoard(Plane_Board_noLaser.size(), 7, 7, 7);
         ALaserPlane->LoadBoard(Plane_Board_noLaser, camera, PlaneBoard);
         ALaserPlane->LoadLaser(Plane_Laser, camera);
@@ -509,7 +517,7 @@ void MainWindow::on_pushButton_Caculate_clicked()
         ui->textBrowser->append("============================finish calibrate============================");
         isCalibed = true;
         ui->label_flagCalibed->setText("Yes");
-
+        //清空图片数组
         Camera_Calib.clear();
         Plane_Board_noLaser.clear();
         Plane_Laser.clear();
@@ -531,13 +539,16 @@ void MainWindow::on_pushButton_clicked()
         cv::Mat r = camera->GetBaseRvecMat();
         cv::Mat t = camera->GetBaseTvecMat();
         std::vector<cv::Point3f> Points3d_all;
-        cloud.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
-        (*cloud).points.resize(Points3d_all.size());
+        if (!cloud)
+        {
+            cloud.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+            (*cloud).points.resize(Points3d_all.size());
+        }
+        else
+            cloud->clear();
         for (vector<cv::Mat>::iterator it = Scan_Laser.begin(); it != Scan_Laser.end(); it++, k++)
         {
             vector<double> Points;
-            cvtColor(*it, *it, CV_RGB2GRAY);
-           // threshold(*it, *it, 0, 255, cv::THRESH_OTSU);
             switch (ui->comboBox_Methods->currentIndex())
             {
             case 0:
@@ -562,32 +573,40 @@ void MainWindow::on_pushButton_clicked()
                 cv::Point3f Points3d = camera->getWorldPoints(cv::Point2f(Points[2 * j + 0], Points[2 * j + 1]), r, t);
                 Points3d.z = (ALaserPlane->Get_D() - ALaserPlane->Get_A() * Points3d.x - ALaserPlane->Get_B() * Points3d.y) / ALaserPlane->Get_C();
                 //拼接     后续需要输入还是标定？
-                if(ui->radioButton_Y_add->isChecked())
-                    Points3d.y += k * Astep->GetStep().at<double>(1, 0);
-                else 
-                    Points3d.x += k * Astep->GetStep().at<double>(0, 0);
-
+                //if(ui->radioButton_Y_add->isChecked())
+                //    Points3d.y += k * Astep->GetStep().at<double>(1, 0);
+                //else 
+                //    Points3d.x += k * Astep->GetStep().at<double>(0, 0);
+                Points3d.y += k * Astep->GetStep().at<double>(1, 0);
+                Points3d.x += k * Astep->GetStep().at<double>(0, 0);
+                Points3d.z += k * Astep->GetStep().at<double>(2, 0);
                 cloud->points.push_back(pcl::PointXYZRGB(Points3d.x, Points3d.y, Points3d.z, red, green, blue));
             }
         }
+        ui->textBrowser_2->append("x"+QString::number(Astep->GetStep().at<double>(0, 0)));
+        ui->textBrowser_2->append("y" + QString::number(Astep->GetStep().at<double>(1, 0)));
+        ui->textBrowser_2->append("z" + QString::number(Astep->GetStep().at<double>(2, 0)));
         ui->textBrowser->append("deep caculate finished");
         ui->textBrowser->append("clearing scan laser images");
-        //Scan_Laser.clear();
-        //ui->listWidget_LaserLine->clear();
+        Scan_Laser.clear();
+        ui->listWidget_LaserLine->clear();
         ui->textBrowser->append("cleared");
         ui->textBrowser->append("showing cloud....");
         //滤波处理
         //半径滤波
         //创建环境
+        if (!cloud_filtered)
+        {
+            cloud_filtered.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+            (*cloud_filtered).points.resize(Points3d_all.size());
+        }
+        else
+            cloud_filtered->clear();
         pcl::RadiusOutlierRemoval<pcl::PointXYZRGB> outrem;
-        cloud_filtered.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
-        (*cloud_filtered).points.resize(Points3d_all.size());
-        // 创建滤波器
+        //半径滤波
         outrem.setInputCloud(cloud);//设置输入点云
-        //像素点和点的个数？
-        outrem.setRadiusSearch(ui->doubleSpinBox_2->value());//设置在0.8的半径内找临近点
-        outrem.setMinNeighborsInRadius(ui->spinBox_8->value());//设置查询点的邻近点集数小于2的删除
-        // 应用滤波器
+        outrem.setRadiusSearch(ui->doubleSpinBox_2->value());
+        outrem.setMinNeighborsInRadius(ui->spinBox_8->value());
         outrem.filter(*cloud_filtered);
 
         //统计滤波
@@ -722,12 +741,14 @@ void MainWindow::on_pushButton_camerastart_clicked()
 
 void MainWindow::on_pushButton_camerapause_clicked()
 {
-    CameraDisp->mutex.lock();
+    if(CameraDisp)
+        CameraDisp->mutex.lock();
 }
 
 void MainWindow::on_pushButton_cameracontinue_clicked()
 {
-    CameraDisp->mutex.unlock();
+    if (CameraDisp)
+        CameraDisp->mutex.unlock();
 }
 
 void MainWindow::on_pushButton_camerastop_clicked()
