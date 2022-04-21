@@ -97,6 +97,7 @@ private:
     pcl::visualization::PCLVisualizer::Ptr viewer;
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud;
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_filtered;
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_after_StatisticalRemoval;//
     //激光三角法
     //相机
     CalibrateCamera* camera;

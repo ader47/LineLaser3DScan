@@ -125,12 +125,12 @@ std::vector<double> ProcessTool::StegerLine(cv::Mat img0,int col,int row,int sqr
 	int imgcol = img.cols;
 	int imgrow = img.rows;
 	std::vector<double> Pt;
-	for (int i = 0; i < imgcol; i++)
+	for (int j = imgrow - 1; j >= 0; j--)
 	{
-		for (int j = 0; j < imgrow; j++)
+		for (int i = 0; i < imgcol; i++)
 		{
 			//大于一个阈值的时候开始计算
-			if (img0.at<uchar>(j, i) > shreshold)
+			if (img0.at<uchar>(cv::Point(i, j)) > shreshold)
 			{
 				cv::Mat hessian(2, 2, CV_32FC1);
 				//得到对应点的hessian矩阵
