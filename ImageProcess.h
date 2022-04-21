@@ -26,10 +26,10 @@ public:
 class ProcessTool 
 {
 public:
-	std::vector<double> AverageLine(cv::Mat img, cv::Point2d leftup, cv::Point2f rightdown);
-	std::vector<double> StegerLine(cv::Mat img0, int col = 3, int row = 9, int sqrtx = 1, int sqrty = 1 ,int shreshold = 80, float distance = 0.5, bool isFloat = false);
+	std::vector<cv::Point2d> AverageLine(cv::Mat img, cv::Point2d leftup, cv::Point2f rightdown);
+	std::vector<cv::Point2d> StegerLine(cv::Mat img0, int col = 3, int row = 9, int sqrtx = 1, int sqrty = 1 ,int shreshold = 80, float distance = 0.5, bool isFloat = false);
 private:
-	void ShowLine(std::vector<double> Points, cv::Mat image);
+	void ShowLine(std::vector<cv::Point2d> Points, cv::Mat image);
 };
 
 #endif

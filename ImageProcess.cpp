@@ -51,7 +51,7 @@ void ROI::Select_ROI(int EVENT, int x, int y, int flags, void* userdata)
 	}
 }
 
-std::vector<double> ProcessTool::AverageLine(cv::Mat img0, cv::Point2d leftup, cv::Point2f rightdown)
+std::vector<cv::Point2d> ProcessTool::AverageLine(cv::Mat img0, cv::Point2d leftup, cv::Point2f rightdown)
 {
 	//预处理
 	cv::Mat  img;
@@ -60,7 +60,7 @@ std::vector<double> ProcessTool::AverageLine(cv::Mat img0, cv::Point2d leftup, c
 	cv::medianBlur(img0, img0, 5);
 	cvtColor(img0, img0, CV_RGB2GRAY);
 	threshold(img0, img0, 0, 255, cv::THRESH_OTSU);
-	std::vector<double> result;
+	std::vector<cv::Point2d> result;
 	for (size_t i = leftup.x; i < rightdown.x; i++)
 	{
 		//cout << "a" << endl;
@@ -75,14 +75,13 @@ std::vector<double> ProcessTool::AverageLine(cv::Mat img0, cv::Point2d leftup, c
 		}
 		if (num == 0)
 			continue;
-		result.push_back(i);
-		result.push_back(1.0 * sum / num);
+		result.push_back(cv::Point2d(i, 1.0 * sum / num));
 	}
 	ShowLine(result, img);
 	return result;
 }
 
-std::vector<double> ProcessTool::StegerLine(cv::Mat img0,int col,int row,int sqrtx,int sqrty,int shreshold,float distance,bool isFloat)
+std::vector<cv::Point2d> ProcessTool::StegerLine(cv::Mat img0,int col,int row,int sqrtx,int sqrty,int shreshold,float distance,bool isFloat)
 {
 	if (img0.channels() == 3)
 		cvtColor(img0,img0, CV_BGR2GRAY);
@@ -124,13 +123,13 @@ std::vector<double> ProcessTool::StegerLine(cv::Mat img0,int col,int row,int sqr
 	double maxD = -1;
 	int imgcol = img.cols;
 	int imgrow = img.rows;
-	std::vector<double> Pt;
-	for (int i = 0; i < imgcol; i++)
+	std::vector<cv::Point2d> Pt;
+	for (int j = imgrow - 1; j >= 0; j--)
 	{
-		for (int j = 0; j < imgrow; j++)
+		for (int i = 0; i < imgcol; i++)
 		{
 			//大于一个阈值的时候开始计算
-			if (img0.at<uchar>(j, i) > shreshold)
+			if (img0.at<uchar>(cv::Point(i, j)) > shreshold)
 			{
 				cv::Mat hessian(2, 2, CV_32FC1);
 				//得到对应点的hessian矩阵
@@ -183,15 +182,9 @@ std::vector<double> ProcessTool::StegerLine(cv::Mat img0,int col,int row,int sqr
 				if (fabs(t * nx) <= distance && fabs(t * ny) <= distance)
 				{
 					if (isFloat)
-					{
-						Pt.push_back(i + t * nx);
-						Pt.push_back(j + t * ny);
-					}
-					else 
-					{
-						Pt.push_back(i);
-						Pt.push_back(j);
-					}
+						Pt.push_back(cv::Point2d(i + t * nx, j + t * ny));
+					else
+						Pt.push_back(cv::Point2d(i, j));
 				}
 			}
 		}
@@ -201,15 +194,10 @@ std::vector<double> ProcessTool::StegerLine(cv::Mat img0,int col,int row,int sqr
 	return Pt;
 }
 
-void ProcessTool::ShowLine(std::vector<double> Points, cv::Mat image)
+void ProcessTool::ShowLine(std::vector<cv::Point2d> Points, cv::Mat image)
 {
-	for (int k = 0; k < Points.size() / 2; k++)
-	{
-		cv::Point rpt;
-		rpt.x = Points[2 * k + 0];
-		rpt.y = Points[2 * k + 1];
-		image.at<cv::Vec3b>(rpt.y, rpt.x) = cv::Vec3b(0, 0, 255);
-	}
+	for (int k = 0; k < Points.size(); k++)
+		image.at<cv::Vec3b>(Points[k].y, Points[k].x) = cv::Vec3b(0, 0, 255);
 	cv::imshow("GetLine", image);
 	cv::waitKey(1);
 }

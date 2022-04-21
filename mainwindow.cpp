@@ -548,7 +548,7 @@ void MainWindow::on_pushButton_clicked()
             cloud->clear();
         for (vector<cv::Mat>::iterator it = Scan_Laser.begin(); it != Scan_Laser.end(); it++, k++)
         {
-            vector<double> Points;
+            vector<cv::Point2d> Points;
             switch (ui->comboBox_Methods->currentIndex())
             {
             case 0:
@@ -567,10 +567,11 @@ void MainWindow::on_pushButton_clicked()
                 );
                 break;
             }
-            for (int j = 0; j < Points.size() / 2; j++)
+
+            for (int j = 0; j < Points.size(); j++)
             {
                 //中心线提取函数返回的数组的坐标为(Points[2 * k + 0], Points[2 * k + 1])
-                cv::Point3f Points3d = camera->getWorldPoints(cv::Point2f(Points[2 * j + 0], Points[2 * j + 1]), r, t);
+                cv::Point3f Points3d = camera->getWorldPoints(cv::Point2f(Points[j].x, Points[j].y), r, t);
                 Points3d.z = (ALaserPlane->Get_D() - ALaserPlane->Get_A() * Points3d.x - ALaserPlane->Get_B() * Points3d.y) / ALaserPlane->Get_C();
                 //拼接     后续需要输入还是标定？
                 //if(ui->radioButton_Y_add->isChecked())
@@ -609,16 +610,26 @@ void MainWindow::on_pushButton_clicked()
         outrem.setMinNeighborsInRadius(ui->spinBox_8->value());
         outrem.filter(*cloud_filtered);
 
-        //统计滤波
-        //pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_after_StatisticalRemoval(new pcl::PointCloud<pcl::PointXYZRGB>);//
-        //pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> Statistical;
-        //Statistical.setInputCloud(cloud);
-        //Statistical.setMeanK(50);//取平均值的临近点数
-        //Statistical.setStddevMulThresh(0.5);//临近点数数目少于多少时会被舍弃
-        //Statistical.filter(*cloud_after_StatisticalRemoval);
+        if (!cloud_after_StatisticalRemoval)
+        {
+            cloud_after_StatisticalRemoval.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+            (*cloud_after_StatisticalRemoval).points.resize(Points3d_all.size());
+        }
+        else
+            cloud_after_StatisticalRemoval->clear();
+        
 
-        viewer->addPointCloud(cloud_filtered, "cloud");
-        viewer->updatePointCloud(cloud_filtered, "cloud");
+
+        pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> Statistical;
+        Statistical.setInputCloud(cloud_filtered);
+        Statistical.setMeanK(35);//取平均值的临近点数
+        Statistical.setStddevMulThresh(0.55);
+        Statistical.filter(*cloud_after_StatisticalRemoval);
+
+
+
+        viewer->addPointCloud(cloud_after_StatisticalRemoval, "cloud");
+        viewer->updatePointCloud(cloud_after_StatisticalRemoval, "cloud");
         //viewer->addPointCloud(cloud, "cloud");
         //viewer->updatePointCloud(cloud, "cloud");
         viewer->resetCamera();
@@ -676,24 +687,24 @@ void MainWindow::on_pushButton_clearClib_clicked()
 
 void MainWindow::RGBsliderReleased()
 {
-    if (cloud_filtered !=NULL&&viewer!=NULL)
+    if (cloud_after_StatisticalRemoval !=NULL&&viewer!=NULL)
     {
-        for (size_t i = 0; i < cloud_filtered->size(); i++)
+        for (size_t i = 0; i < cloud_after_StatisticalRemoval->size(); i++)
         {
-            cloud_filtered->points[i].r = red;
-            cloud_filtered->points[i].g = green;
-            cloud_filtered->points[i].b = blue;
+            cloud_after_StatisticalRemoval->points[i].r = red;
+            cloud_after_StatisticalRemoval->points[i].g = green;
+            cloud_after_StatisticalRemoval->points[i].b = blue;
         }
-        viewer->updatePointCloud(cloud_filtered, "cloud");
+        viewer->updatePointCloud(cloud_after_StatisticalRemoval, "cloud");
         ui->qvtkWidget->update();
     }
 }
 
 void MainWindow::on_pushButton_cloud_clear_clicked()
 {
-    if (cloud_filtered != NULL)
+    if (cloud_after_StatisticalRemoval != NULL)
     {
-        cloud_filtered->points.clear();
+        cloud_after_StatisticalRemoval->points.clear();
         cloud->points.clear();
         viewer->updatePointCloud(cloud, "cloud");
         viewer->resetCamera();
@@ -722,7 +733,7 @@ void MainWindow::on_pushButton_flashcamera_clicked()
 void MainWindow::pSliderValueChanged(int value)
 {
     size = value;
-    if (cloud_filtered != NULL && viewer != NULL)
+    if (cloud_after_StatisticalRemoval != NULL && viewer != NULL)
     {
         viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "cloud");
         ui->qvtkWidget->update();
