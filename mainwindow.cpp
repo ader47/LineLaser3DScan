@@ -638,10 +638,11 @@ void MainWindow::on_pushButton_clicked()
         Statistical.setMeanK(35);//取平均值的临近点数
         Statistical.setStddevMulThresh(0.55);
         Statistical.filter(*cloud_after_StatisticalRemoval);
+
+
         viewer->addPointCloud(cloud_after_StatisticalRemoval, "cloud");
         viewer->updatePointCloud(cloud_after_StatisticalRemoval, "cloud");
-        //viewer->addPointCloud(cloud, "cloud");
-        //viewer->updatePointCloud(cloud, "cloud");
+
         viewer->resetCamera();
         viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, size, "cloud");
         ui->qvtkWidget->update();
@@ -786,10 +787,68 @@ void MainWindow::on_pushButton_camerastop_clicked()
             QMessageBox::information(this,"info","Stoped!");
     }
 }
+void MainWindow::on_pushButton_save_clicked()
+{
+    QString fileName;
+    fileName = QFileDialog::getSaveFileName(this,
+        tr("Open Config"), "", tr("Config Files (*.ifg)"));
+    if (!fileName.isNull())
+    {
+        //fileName是文件名
+        QMessageBox::information(this, "info", "save", QMessageBox::Ok);
+        if (camera != NULL && ALaserPlane != NULL && Astep != NULL)
+        {
+            //camera = new CalibrateCamera();
+            //ALaserPlane = new LaserPlane();
+            //Astep = new step();
+            //序列化到文件
+
+
+
+        }
+        else
+        {
+            QMessageBox::warning(this, "warning", "Have not calibrated!", QMessageBox::Ok);
+        }
+    }
+
+}
+void MainWindow::on_pushButton_load_clicked()
+{
+
+    QString fileName;
+    fileName = QFileDialog::getOpenFileName(this,
+        tr("Open Config"), "", tr("SCD Files (*.scd);; CID Files (*.cid)"));
+
+    if (!fileName.isNull())
+    {
+        if (camera != NULL && ALaserPlane != NULL && Astep != NULL)
+        {
+            delete camera;
+            delete ALaserPlane;
+            delete Astep;
+            //camera = new CalibrateCamera();
+            //ALaserPlane = new LaserPlane();
+            //Astep = new step();
+            //序列化到文件
+
+            isCalibed = true;
+            isCameraCalib = true;
+            isPlaneCalib = true;
+            isStepCalib = true;
+            isBaseCalib = true;
+        }
+        else
+        {
+            //考虑文件不是相应的对象序列化文件
+        }
+        
+    }
+}
 void MainWindow::onTimeOut()
 {
-    //if (CameraDisp)
-        //ui->label_2->setText(QString::number(CameraDisp->GetFPS())+"fps");
+    if (CameraDisp)
+        ui->label_2->setText(QString::number(CameraDisp->GetFPS())+"fps");
 }
 void MainWindow::redSliderValueChanged(int value)
 {

@@ -16,7 +16,7 @@ public:
     explicit CameraDisplay(int CameraID, std::string winName, QObject* parent = 0);
     ~CameraDisplay();
     cv::Mat GetFrame();
-    float GetFPS();
+    double GetFPS();
 protected:
     void run();
 private:
@@ -24,6 +24,7 @@ private:
     cv::Mat matFrame;
     cv::Mat res;
     bool isStart;
+    double fpsInv;
     std::string winName;
 };
 #endif

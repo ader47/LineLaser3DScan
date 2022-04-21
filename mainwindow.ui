@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -77,7 +77,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>54</width>
+                <width>281</width>
                 <height>20</height>
                </rect>
               </property>
@@ -527,7 +527,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QVTKWidget" name="qvtkWidget"/>
+         <widget class="QVTKWidget" name="qvtkWidget" native="true"/>
         </item>
         <item>
          <widget class="QGroupBox" name="groupBox_4">
@@ -671,7 +671,7 @@
          <string>清除标定信息</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_4">
+       <widget class="QPushButton" name="pushButton_save">
         <property name="geometry">
          <rect>
           <x>160</x>
@@ -684,7 +684,7 @@
          <string>保存标定</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_5">
+       <widget class="QPushButton" name="pushButton_load">
         <property name="geometry">
          <rect>
           <x>260</x>

@@ -137,8 +137,8 @@ public:
     QTextBrowser *textBrowser_2;
     QLabel *label_9;
     QPushButton *pushButton_clearClib;
-    QPushButton *pushButton_4;
-    QPushButton *pushButton_5;
+    QPushButton *pushButton_save;
+    QPushButton *pushButton_load;
     QLabel *label_isCamera;
     QLabel *label_isCalibed;
     QLabel *label_flagCalibed;
@@ -187,7 +187,7 @@ public:
         groupBox_13->setStyleSheet(QString::fromUtf8("QGroupBox{border:none}"));
         label_2 = new QLabel(groupBox_13);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(0, 0, 54, 20));
+        label_2->setGeometry(QRect(0, 0, 281, 20));
 
         verticalLayout_3->addWidget(groupBox_13);
 
@@ -608,12 +608,12 @@ public:
         pushButton_clearClib->setObjectName(QString::fromUtf8("pushButton_clearClib"));
         pushButton_clearClib->setGeometry(QRect(160, 60, 81, 23));
         pushButton_clearClib->setAutoFillBackground(false);
-        pushButton_4 = new QPushButton(tab_4);
-        pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
-        pushButton_4->setGeometry(QRect(160, 30, 75, 20));
-        pushButton_5 = new QPushButton(tab_4);
-        pushButton_5->setObjectName(QString::fromUtf8("pushButton_5"));
-        pushButton_5->setGeometry(QRect(260, 30, 75, 20));
+        pushButton_save = new QPushButton(tab_4);
+        pushButton_save->setObjectName(QString::fromUtf8("pushButton_save"));
+        pushButton_save->setGeometry(QRect(160, 30, 75, 20));
+        pushButton_load = new QPushButton(tab_4);
+        pushButton_load->setObjectName(QString::fromUtf8("pushButton_load"));
+        pushButton_load->setGeometry(QRect(260, 30, 75, 20));
         label_isCamera = new QLabel(tab_4);
         label_isCamera->setObjectName(QString::fromUtf8("label_isCamera"));
         label_isCamera->setGeometry(QRect(10, 30, 61, 16));
@@ -647,7 +647,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -709,8 +709,8 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QCoreApplication::translate("MainWindow", "\351\241\265", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "\347\233\270\346\234\272\346\240\207\345\256\232\350\257\257\345\267\256", nullptr));
         pushButton_clearClib->setText(QCoreApplication::translate("MainWindow", "\346\270\205\351\231\244\346\240\207\345\256\232\344\277\241\346\201\257", nullptr));
-        pushButton_4->setText(QCoreApplication::translate("MainWindow", "\344\277\235\345\255\230\346\240\207\345\256\232", nullptr));
-        pushButton_5->setText(QCoreApplication::translate("MainWindow", "\345\212\240\350\275\275\346\240\207\345\256\232", nullptr));
+        pushButton_save->setText(QCoreApplication::translate("MainWindow", "\344\277\235\345\255\230\346\240\207\345\256\232", nullptr));
+        pushButton_load->setText(QCoreApplication::translate("MainWindow", "\345\212\240\350\275\275\346\240\207\345\256\232", nullptr));
         label_isCamera->setText(QCoreApplication::translate("MainWindow", "\347\233\270\346\234\272\350\277\236\346\216\245\357\274\232", nullptr));
         label_isCalibed->setText(QCoreApplication::translate("MainWindow", "\346\240\207\345\256\232\357\274\232", nullptr));
         label_flagCalibed->setText(QCoreApplication::translate("MainWindow", "No", nullptr));

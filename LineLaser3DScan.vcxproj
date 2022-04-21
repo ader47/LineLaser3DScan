@@ -193,7 +193,6 @@
     <ClCompile Include="ImageProcess.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
-    <ClCompile Include="MyMatQuery.cpp" />
     <ClCompile Include="Threads.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -225,7 +224,6 @@
   <ItemGroup>
     <ClInclude Include="Calibrate.h" />
     <ClInclude Include="ImageProcess.h" />
-    <ClInclude Include="MyMatQuery.h" />
     <QtMoc Include="Threads.h" />
     <ClInclude Include="ui_mainwindow.h" />
   </ItemGroup>

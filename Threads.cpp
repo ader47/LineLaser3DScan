@@ -13,21 +13,21 @@ cv::Mat CameraDisplay::GetFrame()
 	return this->res;
 }
 
-float CameraDisplay::GetFPS()
+double CameraDisplay::GetFPS()
 {
-	float fps = 0;
+	double fps = 0;
 	if (videocapture->isOpened())
-	{
-		fps = videocapture->get(cv::CAP_PROP_FRAME_COUNT);
-	}
-	return 0;
+		fps = 1000 / fpsInv;
+	return fps;
 }
 
 void CameraDisplay::run()
 {
 	isStart = true;
+	clock_t start, end;
 	while (isStart)
 	{
+		start = clock();
 		cv::Mat graymat;
 		std::vector<cv::Point2f> corner;
 		mutex.lock();
@@ -40,6 +40,8 @@ void CameraDisplay::run()
 			drawChessboardCorners(matFrame, cv::Size(7, 7), corner, isFind);
 		imshow(winName, matFrame);
 		mutex.unlock();
+		end = clock();
+		fpsInv = end - start;
 	}
 }
 

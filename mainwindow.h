@@ -47,7 +47,6 @@
 #include <vtkColorTransferFunction.h>
 
 #include <ImageProcess.h>
-#include <MyMatQuery.h>
 #include <Calibrate.h>
 #include <QListWidget>
 
@@ -164,6 +163,10 @@ private slots:
     void on_pushButton_cameracontinue_clicked();
 
     void on_pushButton_camerastop_clicked();
+
+    void on_pushButton_save_clicked();
+
+    void on_pushButton_load_clicked();
 
     void RGBsliderReleased();
 
