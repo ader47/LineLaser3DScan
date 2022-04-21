@@ -543,12 +543,31 @@ void MainWindow::on_pushButton_clicked()
         {
             cloud.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
             (*cloud).points.resize(Points3d_all.size());
+            
         }
         else
             cloud->clear();
+        if (!cloud_filtered)
+        {
+            cloud_filtered.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+            (*cloud_filtered).points.resize(Points3d_all.size());
+        }
+        else
+            cloud_filtered->clear();
+
+        if (!cloud_after_StatisticalRemoval)
+        {
+            cloud_after_StatisticalRemoval.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
+            (*cloud_after_StatisticalRemoval).points.resize(Points3d_all.size());
+        }
+        else
+            cloud_after_StatisticalRemoval->clear();
+
+        vector<vector<pcl::PointXYZRGB>> Points3ds;
         for (vector<cv::Mat>::iterator it = Scan_Laser.begin(); it != Scan_Laser.end(); it++, k++)
         {
             vector<cv::Point2d> Points;
+            vector<pcl::PointXYZRGB> Pt;
             switch (ui->comboBox_Methods->currentIndex())
             {
             case 0:
@@ -567,7 +586,7 @@ void MainWindow::on_pushButton_clicked()
                 );
                 break;
             }
-
+            
             for (int j = 0; j < Points.size(); j++)
             {
                 //中心线提取函数返回的数组的坐标为(Points[2 * k + 0], Points[2 * k + 1])
@@ -581,8 +600,25 @@ void MainWindow::on_pushButton_clicked()
                 Points3d.y += k * Astep->GetStep().at<double>(1, 0);
                 Points3d.x += k * Astep->GetStep().at<double>(0, 0);
                 Points3d.z += k * Astep->GetStep().at<double>(2, 0);
+                //Pt.push_back(pcl::PointXYZRGB(Points3d.x, Points3d.y, Points3d.z, red, green, blue));
                 cloud->points.push_back(pcl::PointXYZRGB(Points3d.x, Points3d.y, Points3d.z, red, green, blue));
             }
+            //每条曲线都进行滤波
+            pcl::RadiusOutlierRemoval<pcl::PointXYZRGB> outrem;
+            //半径滤波
+            outrem.setInputCloud(cloud);//设置输入点云
+            outrem.setRadiusSearch(ui->doubleSpinBox_2->value());
+            outrem.setMinNeighborsInRadius(ui->spinBox_8->value());
+            outrem.filter(*cloud_filtered);
+
+
+            cloud->clear();
+            cloud_filtered->clear();
+            for (int i = 0; i < cloud_after_StatisticalRemoval->points.size(); i++)
+                Pt.push_back(cloud_after_StatisticalRemoval->points[i]);
+            cloud_after_StatisticalRemoval->clear();
+            Points3ds.push_back(Pt);
+            Pt.clear();
         }
         ui->textBrowser_2->append("x"+QString::number(Astep->GetStep().at<double>(0, 0)));
         ui->textBrowser_2->append("y" + QString::number(Astep->GetStep().at<double>(1, 0)));
@@ -593,41 +629,15 @@ void MainWindow::on_pushButton_clicked()
         ui->listWidget_LaserLine->clear();
         ui->textBrowser->append("cleared");
         ui->textBrowser->append("showing cloud....");
-        //滤波处理
-        //半径滤波
-        //创建环境
-        if (!cloud_filtered)
-        {
-            cloud_filtered.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
-            (*cloud_filtered).points.resize(Points3d_all.size());
-        }
-        else
-            cloud_filtered->clear();
-        pcl::RadiusOutlierRemoval<pcl::PointXYZRGB> outrem;
-        //半径滤波
-        outrem.setInputCloud(cloud);//设置输入点云
-        outrem.setRadiusSearch(ui->doubleSpinBox_2->value());
-        outrem.setMinNeighborsInRadius(ui->spinBox_8->value());
-        outrem.filter(*cloud_filtered);
 
-        if (!cloud_after_StatisticalRemoval)
-        {
-            cloud_after_StatisticalRemoval.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
-            (*cloud_after_StatisticalRemoval).points.resize(Points3d_all.size());
-        }
-        else
-            cloud_after_StatisticalRemoval->clear();
-        
-
-
+        for (int i = 0; i < Points3ds.size(); i++)
+            for (int j = 0; j < Points3ds[i].size(); j++)
+                cloud->points.push_back(Points3ds[i][j]);
         pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> Statistical;
-        Statistical.setInputCloud(cloud_filtered);
+        Statistical.setInputCloud(cloud);
         Statistical.setMeanK(35);//取平均值的临近点数
         Statistical.setStddevMulThresh(0.55);
         Statistical.filter(*cloud_after_StatisticalRemoval);
-
-
-
         viewer->addPointCloud(cloud_after_StatisticalRemoval, "cloud");
         viewer->updatePointCloud(cloud_after_StatisticalRemoval, "cloud");
         //viewer->addPointCloud(cloud, "cloud");
@@ -704,9 +714,9 @@ void MainWindow::on_pushButton_cloud_clear_clicked()
 {
     if (cloud_after_StatisticalRemoval != NULL)
     {
-        cloud_after_StatisticalRemoval->points.clear();
         cloud->points.clear();
-        viewer->updatePointCloud(cloud, "cloud");
+        cloud->points.clear();
+        viewer->updatePointCloud(cloud_after_StatisticalRemoval, "cloud");
         viewer->resetCamera();
         ui->qvtkWidget->update();
         QMessageBox::information(this, "info", "Points cloud has been cleared!");
