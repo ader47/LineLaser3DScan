@@ -190,6 +190,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Calibrate.cpp" />
+    <ClCompile Include="CloudProcess.cpp" />
     <ClCompile Include="ImageProcess.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
@@ -223,6 +224,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calibrate.h" />
+    <ClInclude Include="CloudProcess.h" />
     <ClInclude Include="ImageProcess.h" />
     <QtMoc Include="Threads.h" />
     <ClInclude Include="ui_mainwindow.h" />

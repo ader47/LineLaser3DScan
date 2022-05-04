@@ -27,9 +27,13 @@
 #include <pcl/point_types.h>
 #include <pcl/visualization/pcl_visualizer.h>
 #include <pcl/visualization/point_cloud_color_handlers.h>
+#include <pcl/io/io.h>
+#include <pcl/io/pcd_io.h>
 
 #include <pcl/filters/statistical_outlier_removal.h>   //统计滤波器头文件
 #include <pcl/filters/radius_outlier_removal.h>
+#include <pcl/filters/fast_bilateral.h>
+#include <pcl/filters/extract_indices.h>
 
 
 // Visualization Toolkit (VTK)
@@ -49,7 +53,7 @@
 #include <ImageProcess.h>
 #include <Calibrate.h>
 #include <QListWidget>
-
+#include <CloudProcess.h>
 //
 #include "strmif.h"
 #include <initguid.h>
@@ -92,11 +96,13 @@ private:
     std::vector<cv::Mat> Step_Calculate;
     //步长计算的图片路径
     std::vector<cv::Mat> Scan_Laser;
-    //PCL
+
+    //PCL滤波
     pcl::visualization::PCLVisualizer::Ptr viewer;
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud;
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_filtered;
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_after_StatisticalRemoval;//
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_after_StatisticalRemoval;
+
     //激光三角法
     //相机
     CalibrateCamera* camera;
@@ -104,6 +110,7 @@ private:
     LaserPlane* ALaserPlane;
     //步长
     step* Astep;
+
     //标定标志
     bool isCameraCalib;
     bool isPlaneCalib;
@@ -119,10 +126,12 @@ private:
     CameraDisplay* CameraDisp;
     QTimer* tim;
     float fps;
-    vector<string> CameraName;//存储摄像头名称
+
+    //存储摄像头名称
+    vector<string> CameraName;
     int listDevices(vector<string>& list);
 
-    //暂时没有到
+    //暂时没有用到
     GetLineMethods getlinemethod;
 
     //右键菜单

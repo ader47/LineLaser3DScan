@@ -123,7 +123,9 @@ std::vector<cv::Point2d> ProcessTool::StegerLine(cv::Mat img0,int col,int row,in
 	double maxD = -1;
 	int imgcol = img.cols;
 	int imgrow = img.rows;
+
 	std::vector<cv::Point2d> Pt;
+	//std::vector<double> Pt;
 	for (int j = imgrow - 1; j >= 0; j--)
 	{
 		for (int i = 0; i < imgcol; i++)

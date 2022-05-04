@@ -119,6 +119,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->spinBox_2, SIGNAL(valueChanged(int)), this, SLOT(setEven(int)));
     connect(ui->spinBox_3, SIGNAL(valueChanged(int)), this, SLOT(setEven(int)));
+
     ui->spinBox->setMinimum(0);
     ui->spinBox->setMaximum(255);
     ui->spinBox_2->setMinimum(0);
@@ -126,21 +127,25 @@ MainWindow::MainWindow(QWidget *parent)
     ui->spinBox_4->setMinimum(0);
     ui->spinBox_5->setMinimum(0);
     
-    ui->spinBox_2->setValue(3);
+    ui->spinBox_2->setValue(17);
     ui->spinBox_2->setSingleStep(2);
     ui->spinBox_3->setValue(17);
     ui->spinBox_3->setSingleStep(2);
     ui->doubleSpinBox->setValue(0.6);
     ui->doubleSpinBox->setSingleStep(0.02);
-    ui->spinBox->setValue(80);
-    ui->spinBox_4->setValue(3);
-    ui->spinBox_5->setValue(3);
+    ui->spinBox->setValue(200);
+    ui->spinBox_4->setValue(7);
+    ui->spinBox_5->setValue(7);
     ui->spinBox_6->setValue(19);
     
+    ui->doubleSpinBox_2->setValue(0.3);
+    ui->spinBox_8->setValue(4);
+
     red = 0;
-    green = 0;
+    green = 255;
     blue = 128;
     size = 2;
+    ui->horizontalSlider_Green->setSliderPosition(255);
     ui->horizontalSlider_Blue->setSliderPosition(128);
     ui->spinBox_blue->setValue(128);
 
@@ -256,7 +261,10 @@ int MainWindow::listDevices(vector<string>& list)
     }
     return deviceCounter;
 }
-
+/// <summary>
+/// 设置控件只能为奇数
+/// </summary>
+/// <param name="value"></param>
 void MainWindow::setEven(int value)
 {
     QSpinBox* currentSpinBox = qobject_cast<QSpinBox*>(sender());
@@ -267,6 +275,10 @@ void MainWindow::setEven(int value)
     }
 }
 
+
+/// <summary>
+/// 右键菜单删除操作
+/// </summary>
 void MainWindow::onActionDelete()
 {
     QList<QListWidgetItem*> items = currentListWidget->selectedItems();
@@ -286,6 +298,9 @@ void MainWindow::onActionDelete()
     }
 }
 
+/// <summary>
+/// 右键菜单清空操作
+/// </summary>
 void MainWindow::onActionClear()
 {
     QList<QListWidgetItem*> items = currentListWidget->selectedItems();
@@ -301,6 +316,10 @@ void MainWindow::onActionClear()
     }
 }
 
+/// <summary>
+/// 弹出右键菜单操作
+/// </summary>
+/// <param name="pos"></param>
 void MainWindow::onCustomContextMenuRequested(QPoint pos)
 {
     qDebug() << ui->comboBox_Methods->currentIndex();
@@ -309,7 +328,9 @@ void MainWindow::onCustomContextMenuRequested(QPoint pos)
 }
 
 
-
+/// <summary>
+/// 选择标定图片按钮
+/// </summary>
 void MainWindow::on_BN_Select_Clib_Picture_clicked()
 {
     QMessageBox::StandardButton rb = QMessageBox::question(this, "Camera", "Use Camera to grasp image?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Yes);
@@ -336,6 +357,10 @@ void MainWindow::on_BN_Select_Clib_Picture_clicked()
     }
 }
 
+
+/// <summary>
+/// 选择基准图片按钮
+/// </summary>
 void MainWindow::on_BN_Select_Base_Picture_clicked()
 {
     QMessageBox::StandardButton rb = QMessageBox::question(this, "Camera", "Use Camera to grasp image?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Yes);
@@ -368,7 +393,9 @@ void MainWindow::on_BN_Select_Base_Picture_clicked()
     }
 }
 
-
+/// <summary>
+/// 选择无激光的标定板按钮
+/// </summary>
 void MainWindow::on_BN_Select_Board_noLaser_clicked()
 {
     QMessageBox::StandardButton rb = QMessageBox::question(this, "Camera", "Use Camera to grasp image?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Yes);
@@ -392,7 +419,9 @@ void MainWindow::on_BN_Select_Board_noLaser_clicked()
         }
 }
 
-
+/// <summary>
+/// 选择有激光的标定板按钮
+/// </summary>
 void MainWindow::on_BN_Select_Board_Laser_clicked()
 {
     QMessageBox::StandardButton rb = QMessageBox::question(this, "Camera", "Use Camera to grasp image?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Yes);
@@ -418,6 +447,10 @@ void MainWindow::on_BN_Select_Board_Laser_clicked()
 
 }
 
+
+/// <summary>
+/// 选择步长按钮
+/// </summary>
 void MainWindow::on_BN_Select_Step_Pic_clicked()
 {
     QMessageBox::StandardButton rb = QMessageBox::question(this, "Camera", "Use Camera to grasp image?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Yes);
@@ -443,6 +476,9 @@ void MainWindow::on_BN_Select_Step_Pic_clicked()
 
 }
 
+/// <summary>
+/// 激光图片
+/// </summary>
 void MainWindow::on_BN_Select_LaserLine_clicked()
 {
     QMessageBox::StandardButton rb = QMessageBox::question(this, "Camera", "Use Camera to grasp image?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Yes);
@@ -466,6 +502,10 @@ void MainWindow::on_BN_Select_LaserLine_clicked()
         Scan_Laser.push_back(cv::imread((*it).toStdString(),1));
     }
 }
+
+/// <summary>
+/// 计算标定信息
+/// </summary>
 void MainWindow::on_pushButton_Caculate_clicked()
 {
     if (ui->listWidget_BasePic->count()
@@ -529,6 +569,10 @@ void MainWindow::on_pushButton_Caculate_clicked()
     else
         QMessageBox::warning(this, "warning", "Please check the images for calibration!", QMessageBox::Ok);
 }
+
+/// <summary>
+/// 重建按钮
+/// </summary>
 void MainWindow::on_pushButton_clicked()
 {
     if (isCalibed && ui->listWidget_LaserLine->count())
@@ -603,22 +647,98 @@ void MainWindow::on_pushButton_clicked()
                 //Pt.push_back(pcl::PointXYZRGB(Points3d.x, Points3d.y, Points3d.z, red, green, blue));
                 cloud->points.push_back(pcl::PointXYZRGB(Points3d.x, Points3d.y, Points3d.z, red, green, blue));
             }
-            //每条曲线都进行滤波
-            pcl::RadiusOutlierRemoval<pcl::PointXYZRGB> outrem;
+
+            //对每条线条进行处理
             //半径滤波
-            outrem.setInputCloud(cloud);//设置输入点云
+            pcl::RadiusOutlierRemoval<pcl::PointXYZRGB> outrem;
+            outrem.setInputCloud(cloud);
             outrem.setRadiusSearch(ui->doubleSpinBox_2->value());
             outrem.setMinNeighborsInRadius(ui->spinBox_8->value());
             outrem.filter(*cloud_filtered);
-
-
             cloud->clear();
-            cloud_filtered->clear();
-            for (int i = 0; i < cloud_after_StatisticalRemoval->points.size(); i++)
-                Pt.push_back(cloud_after_StatisticalRemoval->points[i]);
-            cloud_after_StatisticalRemoval->clear();
+
+            //简化线条，距离需要自行设定
+            CloudProcessTool CloudTool;
+            CloudTool.cutCloud(cloud_filtered, 1.5);
+            
+            
+            //点云线条平滑处理
+            //*********
+            // //双边滤波器
+            //pcl::PointCloud<pcl::PointXYZRGB>::Ptr outcloud(new pcl::PointCloud<pcl::PointXYZRGB>);
+            //pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree1(new  pcl::search::KdTree<pcl::PointXYZRGB>);
+            //tree1->setInputCloud(cloud);
+            //pcl::BilateralFilter<pcl::PointXYZRGB> nf;
+            //nf.setInputCloud(cloud);  //设置输入点云
+            //nf.setSearchMethod(tree1); //设置搜索方法
+            //nf.setHalfSize(1);      //高斯滤波器的一半窗口值
+            //nf.setStdDev(0.01);           //标准差
+            //nf.filter(*outcloud);
+
+
+            //特征点提取，由于点云线条不够平滑，暂时无法使用
+             
+            //vector<double> k0;
+            //vector<double> k1;
+            //bool firstCase = true;
+            //pcl::PointIndices::Ptr inliers(new pcl::PointIndices());
+            //vector<int> T;
+            //const double Pi = 3.14159265;
+            //for (int i = 1; i < cloud_filtered->points.size(); i += 2)
+            //{
+            //    if (firstCase)
+            //    {
+            //        k0 = PointK(cloud_filtered->points[i - 1], cloud_filtered->points[i]);
+            //        firstCase = false;
+            //    }
+            //    else
+            //    {
+            //        k1 = PointK(cloud_filtered->points[i - 1], cloud_filtered->points[i]);
+            //        //判断当前和之前的角度
+            //        //cout << dotMul(k0, k1) << endl;
+            //        //cout << vNorm(k0) << " " << vNorm(k1) << endl;
+            //        //cout << (dotMul(k0, k1) / (vNorm(k0) * vNorm(k1))) << endl;
+            //        //cout << "Angle:";
+            //        //计算向量之间的角度
+            //        double Angle = (acos((dotMul(k0, k1) / (vNorm(k0) * vNorm(k1))))) / Pi * 180;
+            //        //cout << Angle << endl;
+            //        //大于一个角度阈值
+            //        if (Angle > 7)
+            //        {
+            //            //inliers->indices.push_back(i);
+            //            T.push_back(i);
+            //        }
+            //        //如果大于一个角度
+
+            //        //将后一个替换为当前向量
+            //        k0 = k1;
+            //    }
+            //}
+            //
+            // //根据阈值将点删去
+            //for (int i = 0; i < T[2]; i++)
+            //{
+            //    inliers->indices.push_back(i);
+            //}
+
+            //for (int i = T[2]; i < cloud_filtered->points.size(); i++)
+            //{
+            //    inliers->indices.push_back(i);
+            //}
+
+            //cutCloud(cloud_filtered, inliers);
+
+            //直接根据ROI来确定？？？？？？？
+            //可以设置多个ROI？？？
+            
+
+            for (int i = 0; i < cloud_filtered->points.size(); i++)
+                Pt.push_back(cloud_filtered->points[i]);
+
             Points3ds.push_back(Pt);
+
             Pt.clear();
+            cloud_filtered->clear();
         }
         ui->textBrowser_2->append("x"+QString::number(Astep->GetStep().at<double>(0, 0)));
         ui->textBrowser_2->append("y" + QString::number(Astep->GetStep().at<double>(1, 0)));
@@ -633,15 +753,18 @@ void MainWindow::on_pushButton_clicked()
         for (int i = 0; i < Points3ds.size(); i++)
             for (int j = 0; j < Points3ds[i].size(); j++)
                 cloud->points.push_back(Points3ds[i][j]);
-        pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> Statistical;
-        Statistical.setInputCloud(cloud);
-        Statistical.setMeanK(35);//取平均值的临近点数
-        Statistical.setStddevMulThresh(0.55);
-        Statistical.filter(*cloud_after_StatisticalRemoval);
 
+        //统计滤波，不好用
+        //pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> Statistical;
+        //Statistical.setInputCloud(cloud);
+        //Statistical.setMeanK(20);
+        //Statistical.setStddevMulThresh(0.7);
+        //Statistical.filter(*cloud_after_StatisticalRemoval);
+        // //保存点云
+        //pcl::io::savePCDFileASCII("hanfeng.pcd", *cloud);
 
-        viewer->addPointCloud(cloud_after_StatisticalRemoval, "cloud");
-        viewer->updatePointCloud(cloud_after_StatisticalRemoval, "cloud");
+        viewer->addPointCloud(cloud, "cloud");
+        viewer->updatePointCloud(cloud, "cloud");
 
         viewer->resetCamera();
         viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, size, "cloud");
@@ -665,6 +788,9 @@ void MainWindow::on_pushButton_2_clicked()
     ui->qvtkWidget->update();
 }
 
+/// <summary>
+/// 清空标定信息
+/// </summary>
 void MainWindow::on_pushButton_clearClib_clicked()
 {
     if (camera != NULL&&ALaserPlane != NULL&&Astep != NULL)
@@ -696,28 +822,34 @@ void MainWindow::on_pushButton_clearClib_clicked()
         QMessageBox::warning(this,"warning","Have not Calibrated!");
 }
 
+/// <summary>
+/// 点云颜色滑块操作
+/// </summary>
 void MainWindow::RGBsliderReleased()
 {
-    if (cloud_after_StatisticalRemoval !=NULL&&viewer!=NULL)
+    if (cloud !=NULL&&viewer!=NULL)
     {
-        for (size_t i = 0; i < cloud_after_StatisticalRemoval->size(); i++)
+        for (size_t i = 0; i < cloud->size(); i++)
         {
-            cloud_after_StatisticalRemoval->points[i].r = red;
-            cloud_after_StatisticalRemoval->points[i].g = green;
-            cloud_after_StatisticalRemoval->points[i].b = blue;
+            cloud->points[i].r = red;
+            cloud->points[i].g = green;
+            cloud->points[i].b = blue;
         }
-        viewer->updatePointCloud(cloud_after_StatisticalRemoval, "cloud");
+        viewer->updatePointCloud(cloud, "cloud");
         ui->qvtkWidget->update();
     }
 }
 
+/// <summary>
+/// 点云清空
+/// </summary>
 void MainWindow::on_pushButton_cloud_clear_clicked()
 {
-    if (cloud_after_StatisticalRemoval != NULL)
+    if (cloud != NULL)
     {
         cloud->points.clear();
         cloud->points.clear();
-        viewer->updatePointCloud(cloud_after_StatisticalRemoval, "cloud");
+        viewer->updatePointCloud(cloud, "cloud");
         viewer->resetCamera();
         ui->qvtkWidget->update();
         QMessageBox::information(this, "info", "Points cloud has been cleared!");
@@ -726,6 +858,9 @@ void MainWindow::on_pushButton_cloud_clear_clicked()
         QMessageBox::information(this,"info","Points cloud has not initialed!");
 }
 
+/// <summary>
+/// 刷新相机信息
+/// </summary>
 void MainWindow::on_pushButton_flashcamera_clicked()
 {
     ui->comboBox_camera_select->clear();
@@ -741,17 +876,23 @@ void MainWindow::on_pushButton_flashcamera_clicked()
     }
 }
 
+/// <summary>
+/// 点云颜色滑块操作
+/// </summary>
+/// <param name="value"></param>
 void MainWindow::pSliderValueChanged(int value)
 {
     size = value;
-    if (cloud_after_StatisticalRemoval != NULL && viewer != NULL)
+    if (cloud != NULL && viewer != NULL)
     {
         viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, value, "cloud");
         ui->qvtkWidget->update();
     }
 }
 
-
+/// <summary>
+/// 复位相机视角
+/// </summary>
 void MainWindow::on_pushButton_camerastart_clicked()
 {
     if (!CameraDisp)
@@ -761,18 +902,27 @@ void MainWindow::on_pushButton_camerastart_clicked()
     }
 }
 
+/// <summary>
+/// 相机暂停
+/// </summary>
 void MainWindow::on_pushButton_camerapause_clicked()
 {
     if(CameraDisp)
         CameraDisp->mutex.lock();
 }
 
+/// <summary>
+/// 相机继续
+/// </summary>
 void MainWindow::on_pushButton_cameracontinue_clicked()
 {
     if (CameraDisp)
         CameraDisp->mutex.unlock();
 }
 
+/// <summary>
+/// 相机停止
+/// </summary>
 void MainWindow::on_pushButton_camerastop_clicked()
 {
     if (CameraDisp)
@@ -787,24 +937,29 @@ void MainWindow::on_pushButton_camerastop_clicked()
             QMessageBox::information(this,"info","Stoped!");
     }
 }
+
+/// <summary>
+/// 保存标定信息，未写好
+/// </summary>
 void MainWindow::on_pushButton_save_clicked()
 {
     QString fileName;
     fileName = QFileDialog::getSaveFileName(this,
-        tr("Open Config"), "", tr("Config Files (*.ifg)"));
+        tr("Save Config"), "Calibration", tr("Config Files (*.ifg)"));
     if (!fileName.isNull())
     {
         //fileName是文件名
-        QMessageBox::information(this, "info", "save", QMessageBox::Ok);
         if (camera != NULL && ALaserPlane != NULL && Astep != NULL)
         {
-            //camera = new CalibrateCamera();
-            //ALaserPlane = new LaserPlane();
-            //Astep = new step();
+
             //序列化到文件
-
-
-
+            ofstream osm(fileName.toStdString(), ios::out | ios::binary);
+            //这个地址一定要转换成char*
+            osm.write((char*)camera, sizeof(CalibrateCamera));
+            osm.write((char*)ALaserPlane, sizeof(LaserPlane));
+            osm.write((char*)Astep, sizeof(step));
+            osm.close();
+            QMessageBox::information(this, "info", "Success!", QMessageBox::Ok);
         }
         else
         {
@@ -813,12 +968,16 @@ void MainWindow::on_pushButton_save_clicked()
     }
 
 }
+
+/// <summary>
+/// 加载标定信息，未写好
+/// </summary>
 void MainWindow::on_pushButton_load_clicked()
 {
 
     QString fileName;
     fileName = QFileDialog::getOpenFileName(this,
-        tr("Open Config"), "", tr("SCD Files (*.scd);; CID Files (*.cid)"));
+        tr("Open Config"), "Calibration", tr("Config Files (*.ifg)"));
 
     if (!fileName.isNull())
     {
@@ -827,29 +986,51 @@ void MainWindow::on_pushButton_load_clicked()
             delete camera;
             delete ALaserPlane;
             delete Astep;
-            //camera = new CalibrateCamera();
-            //ALaserPlane = new LaserPlane();
-            //Astep = new step();
-            //序列化到文件
+        }
+        camera = (CalibrateCamera*)malloc(sizeof(CalibrateCamera));
+        ALaserPlane = (LaserPlane*)malloc(sizeof(LaserPlane));
+        Astep = (step*)malloc(sizeof(step));
+        ifstream ism(fileName.toStdString(), ios::in | ios::binary);
+        //不用写左值
+        ism.read((char*)camera, sizeof(CalibrateCamera));
+        ism.read((char*)ALaserPlane, sizeof(LaserPlane));
+        ism.read((char*)Astep, sizeof(step));
+        ism.close();
+        //输出内参数
+        //ui->textBrowser_2->append("CameraMatrix:");
+        //ui->textBrowser_2->append("fx = " + QString::number(camera->GetCameraMatrix().at<double>(0, 0)));
+        //ui->textBrowser_2->append("fy = " + QString::number(camera->GetCameraMatrix().at<double>(1, 1)));
+        //ui->textBrowser_2->append("cx = " + QString::number(camera->GetCameraMatrix().at<double>(0, 2)));
+        //ui->textBrowser_2->append("cy = " + QString::number(camera->GetCameraMatrix().at<double>(1, 2)));
 
-            isCalibed = true;
-            isCameraCalib = true;
-            isPlaneCalib = true;
-            isStepCalib = true;
-            isBaseCalib = true;
-        }
-        else
-        {
-            //考虑文件不是相应的对象序列化文件
-        }
-        
+        //ui->textBrowser_2->append("Calibrate errors:");
+        ////输出标定误差
+        //for (int i = 0; i < camera->GetImageNum(); i++)
+        //    ui->textBrowser_2->append("No." + QString::number(i) + ": " + QString::number(*(camera->GetErr_ALL() + i)) + " Pixel");
+        //ui->textBrowser_2->append("Average: " + QString::number(camera->GetAverage_err()) + " Pixel");
+
+        isCalibed = true;
+        isCameraCalib = true;
+        isPlaneCalib = true;
+        isStepCalib = true;
+        isBaseCalib = true;
+        QMessageBox::information(this, "info", "Success!", QMessageBox::Ok);
     }
 }
+
+/// <summary>
+/// 计时器，获得相机FPS
+/// </summary>
 void MainWindow::onTimeOut()
 {
     if (CameraDisp)
         ui->label_2->setText(QString::number(CameraDisp->GetFPS())+"fps");
 }
+
+/// <summary>
+/// 点云颜色滑块操作
+/// </summary>
+/// <param name="value"></param>
 void MainWindow::redSliderValueChanged(int value)
 {
     red = value;
