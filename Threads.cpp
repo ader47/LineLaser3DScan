@@ -12,7 +12,10 @@ cv::Mat CameraDisplay::GetFrame()
 	mutex.unlock();
 	return this->res;
 }
-
+/// <summary>
+/// 得到瞬时帧率，不代表实际帧率
+/// </summary>
+/// <returns></returns>
 double CameraDisplay::GetFPS()
 {
 	double fps = 0;

@@ -563,7 +563,28 @@ void MainWindow::on_pushButton_Caculate_clicked()
         Plane_Laser.clear();
         Step_Calculate.clear();
         Scan_Laser.clear();
+        //调试代码
+        cv::Mat r = camera->GetBaseRvecMat();
+        cv::Mat t = camera->GetBaseTvecMat();
+        ui->textBrowser_2->append("R:");
+        ui->textBrowser_2->append("R11=" + QString::number(r.at<double>(0, 0)));
+        ui->textBrowser_2->append("R12=" + QString::number(r.at<double>(0, 1)));
+        ui->textBrowser_2->append("R13=" + QString::number(r.at<double>(0, 2)));
+        ui->textBrowser_2->append("R21=" + QString::number(r.at<double>(1, 0)));
+        ui->textBrowser_2->append("R22=" + QString::number(r.at<double>(1, 1)));
+        ui->textBrowser_2->append("R23=" + QString::number(r.at<double>(1, 2)));
+        ui->textBrowser_2->append("R31=" + QString::number(r.at<double>(2, 0)));
+        ui->textBrowser_2->append("R32=" + QString::number(r.at<double>(2, 1)));
+        ui->textBrowser_2->append("R33=" + QString::number(r.at<double>(2, 2)));
+        ui->textBrowser_2->append("t:");
+        ui->textBrowser_2->append("t1=" + QString::number(t.at<double>(0, 0)));
+        ui->textBrowser_2->append("t2=" + QString::number(t.at<double>(1, 0)));
+        ui->textBrowser_2->append("t3=" + QString::number(t.at<double>(2, 0)));
 
+        ui->textBrowser_2->append("t3=" + QString::number(ALaserPlane->Get_A()));
+        ui->textBrowser_2->append("t3=" + QString::number(ALaserPlane->Get_B()));
+        ui->textBrowser_2->append("t3=" + QString::number(ALaserPlane->Get_C()));
+        ui->textBrowser_2->append("t3=" + QString::number(ALaserPlane->Get_D()));
         QMessageBox::information(this, "info", "Calibrate finished!", QMessageBox::Ok);
     }
     else
@@ -582,6 +603,7 @@ void MainWindow::on_pushButton_clicked()
         ProcessTool Tool;
         cv::Mat r = camera->GetBaseRvecMat();
         cv::Mat t = camera->GetBaseTvecMat();
+
         std::vector<cv::Point3f> Points3d_all;
         if (!cloud)
         {
@@ -608,8 +630,11 @@ void MainWindow::on_pushButton_clicked()
             cloud_after_StatisticalRemoval->clear();
 
         vector<vector<pcl::PointXYZRGB>> Points3ds;
+        clock_t start, end;
+        double averagetime = 0;
         for (vector<cv::Mat>::iterator it = Scan_Laser.begin(); it != Scan_Laser.end(); it++, k++)
         {
+            start = clock();
             vector<cv::Point2d> Points;
             vector<pcl::PointXYZRGB> Pt;
             switch (ui->comboBox_Methods->currentIndex())
@@ -630,11 +655,32 @@ void MainWindow::on_pushButton_clicked()
                 );
                 break;
             }
+            end = clock();
+            //调试代码，计算处理时间
+            double endtime = (double)(end - start) / CLOCKS_PER_SEC;
+            averagetime += endtime * 1000;
+            ui->textBrowser->append("average time = " + QString::number(endtime *1000) + "ms");
+
+            //调试代码
+            cv::Point3f Points00 = camera->getWorldPoints(cv::Point2f(0, 0), r, t);
+            cv::Point3f Points60 = camera->getWorldPoints(cv::Point2f(4, 0), r, t);
+            cv::Point3f Points06 = camera->getWorldPoints(cv::Point2f(0, 4), r, t);
+            ui->textBrowser_2->append("P00x = " + QString::number(Points00.x));
+            ui->textBrowser_2->append("P00y = " + QString::number(Points00.y));
+            ui->textBrowser_2->append("P00z = " + QString::number(Points00.z));
+            ui->textBrowser_2->append("P60x = " + QString::number(Points60.x));
+            ui->textBrowser_2->append("P60y = " + QString::number(Points60.y));
+            ui->textBrowser_2->append("P60z = " + QString::number(Points60.z));
+            ui->textBrowser_2->append("P06x = " + QString::number(Points06.x));
+            ui->textBrowser_2->append("P06y = " + QString::number(Points06.y));
+            ui->textBrowser_2->append("P06z = " + QString::number(Points06.z));
+
             
             for (int j = 0; j < Points.size(); j++)
             {
                 //中心线提取函数返回的数组的坐标为(Points[2 * k + 0], Points[2 * k + 1])
                 cv::Point3f Points3d = camera->getWorldPoints(cv::Point2f(Points[j].x, Points[j].y), r, t);
+                
                 Points3d.z = (ALaserPlane->Get_D() - ALaserPlane->Get_A() * Points3d.x - ALaserPlane->Get_B() * Points3d.y) / ALaserPlane->Get_C();
                 //拼接     后续需要输入还是标定？
                 //if(ui->radioButton_Y_add->isChecked())
@@ -655,7 +701,7 @@ void MainWindow::on_pushButton_clicked()
             outrem.setRadiusSearch(ui->doubleSpinBox_2->value());
             outrem.setMinNeighborsInRadius(ui->spinBox_8->value());
             outrem.filter(*cloud_filtered);
-            cloud->clear();
+            
 
             //简化线条，距离需要自行设定
             CloudProcessTool CloudTool;
@@ -730,16 +776,24 @@ void MainWindow::on_pushButton_clicked()
 
             //直接根据ROI来确定？？？？？？？
             //可以设置多个ROI？？？
-            
-
             for (int i = 0; i < cloud_filtered->points.size(); i++)
                 Pt.push_back(cloud_filtered->points[i]);
-
             Points3ds.push_back(Pt);
-
             Pt.clear();
-            cloud_filtered->clear();
+            //if(Points3ds.size()==31)
+            //    if (!cloud->empty())
+            //        pcl::io::savePCDFileASCII("asd.pcd", *cloud_filtered);
+            //    else
+            //        QMessageBox::warning(NULL, "warning", "Empty!", QMessageBox::Ok);
+                
+            cloud_filtered->points.clear();
+            cloud->clear();
         }
+
+        //调试代码，计算处理平均时间
+        averagetime /= Points3ds.size();
+        ui->textBrowser->append("time=" + QString::number(averagetime) + "ms");
+
         ui->textBrowser_2->append("x"+QString::number(Astep->GetStep().at<double>(0, 0)));
         ui->textBrowser_2->append("y" + QString::number(Astep->GetStep().at<double>(1, 0)));
         ui->textBrowser_2->append("z" + QString::number(Astep->GetStep().at<double>(2, 0)));
@@ -754,6 +808,7 @@ void MainWindow::on_pushButton_clicked()
             for (int j = 0; j < Points3ds[i].size(); j++)
                 cloud->points.push_back(Points3ds[i][j]);
 
+
         //统计滤波，不好用
         //pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> Statistical;
         //Statistical.setInputCloud(cloud);
@@ -761,7 +816,7 @@ void MainWindow::on_pushButton_clicked()
         //Statistical.setStddevMulThresh(0.7);
         //Statistical.filter(*cloud_after_StatisticalRemoval);
         // //保存点云
-        //pcl::io::savePCDFileASCII("hanfeng.pcd", *cloud);
+ /*       pcl::io::savePCDFile("hanfeng.pcd", *cloud);*/
 
         viewer->addPointCloud(cloud, "cloud");
         viewer->updatePointCloud(cloud, "cloud");
@@ -996,7 +1051,7 @@ void MainWindow::on_pushButton_load_clicked()
         ism.read((char*)ALaserPlane, sizeof(LaserPlane));
         ism.read((char*)Astep, sizeof(step));
         ism.close();
-        //输出内参数
+        //输出内参数，调试代码
         //ui->textBrowser_2->append("CameraMatrix:");
         //ui->textBrowser_2->append("fx = " + QString::number(camera->GetCameraMatrix().at<double>(0, 0)));
         //ui->textBrowser_2->append("fy = " + QString::number(camera->GetCameraMatrix().at<double>(1, 1)));

@@ -8,20 +8,6 @@
 #include <iostream>
 #include <vector>
 
-class ROI {
-private:
-	cv::Point LeftUP;
-	cv::Point RightDOWN;
-	int times=0;
-public:
-	cv::Point GetLeftUP();
-	cv::Point GetRightDOWN();
-	ROI(cv::Point LeftUP, cv::Point RightDOWN);
-	void SetLeftUP(cv::Point p);
-	void SetRightDOWN(cv::Point p);
-	void Select_ROI(int EVENT, int x, int y, int flags, void* userdata);
-};
-
 
 class ProcessTool 
 {

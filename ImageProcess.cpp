@@ -1,55 +1,5 @@
 #include "ImageProcess.h"
 
-cv::Point ROI::GetLeftUP()
-{
-	return LeftUP;
-}
-
-cv::Point ROI::GetRightDOWN()
-{
-	return RightDOWN;
-}
-
-ROI::ROI(cv::Point LeftUP, cv::Point RightDOWN)
-{
-	this->LeftUP = LeftUP;
-	this->RightDOWN = RightDOWN;
-}
-
-void ROI::SetLeftUP(cv::Point p)
-{
-	this->LeftUP = p;
-}
-
-void ROI::SetRightDOWN(cv::Point p)
-{
-	this->RightDOWN = p;
-}
-
-void ROI::Select_ROI(int EVENT, int x, int y, int flags, void* userdata)
-{
-	switch (EVENT)
-	{
-	case cv::EVENT_LBUTTONDOWN:
-	{
-		cv::Point p(x, y);
-		this->times++;
-		switch (this->times)
-		{
-		case 1:
-			LeftUP = p;
-			break;
-		case 2:
-			RightDOWN = p;
-			break;
-		default:
-			break;
-		}
-		//std::cout << p << std::endl;
-	}
-	break;
-	}
-}
 
 std::vector<cv::Point2d> ProcessTool::AverageLine(cv::Mat img0, cv::Point2d leftup, cv::Point2f rightdown)
 {
@@ -126,6 +76,8 @@ std::vector<cv::Point2d> ProcessTool::StegerLine(cv::Mat img0,int col,int row,in
 
 	std::vector<cv::Point2d> Pt;
 	//std::vector<double> Pt;
+
+	//
 	for (int j = imgrow - 1; j >= 0; j--)
 	{
 		for (int i = 0; i < imgcol; i++)

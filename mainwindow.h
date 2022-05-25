@@ -96,6 +96,9 @@ private:
     std::vector<cv::Mat> Step_Calculate;
     //步长计算的图片路径
     std::vector<cv::Mat> Scan_Laser;
+    //保存兴趣点
+    vector<cv::Point3d> ROI;
+
 
     //PCL滤波
     pcl::visualization::PCLVisualizer::Ptr viewer;
